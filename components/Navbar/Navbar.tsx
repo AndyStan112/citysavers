@@ -2,11 +2,11 @@
 import "./Navbar.css";
 import {
   MapOutlined,
-  AccountCircleOutlined,
   TaskAltOutlined,
   BookmarkBorderOutlined,
   LocationOnOutlined,
 } from "@mui/icons-material";
+import { Button } from "@mui/material";
 
 import { useRouter } from "next/navigation";
 
@@ -38,25 +38,20 @@ export default function Navbar() {
       spacer: true,
       target: "",
     },
-    {
-      label: "Account",
-      icon: <AccountCircleOutlined />,
-      target: "/map/account",
-    },
   ];
 
   return (
-    <div className="navbar">
+    <nav className="navbar">
       {navbarButtonList.map((props, key) =>
         props.spacer ? (
           <div key={key} className="spacer"></div>
         ) : (
-          <button key={key} onClick={() => router.push(props.target)}>
+          <Button key={key}>
             {props.icon}
             <span>{props.label}</span>
-          </button>
+          </Button>
         )
       )}
-    </div>
+    </nav>
   );
 }

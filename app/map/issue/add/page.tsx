@@ -15,8 +15,8 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { Done, Label, LocationOn } from "@mui/icons-material";
-import { useState } from "react";
+import { Done, LocationOn } from "@mui/icons-material";
+import { useState, useEffect } from "react";
 import { LocationTypes } from "@/constants/LocationTypes";
 import UploadGallery from "@/components/UploadGallery/UploadGallery";
 import {
@@ -27,16 +27,26 @@ import { useAtom, useAtomValue } from "jotai";
 import "./page.css";
 import { IssueTypes } from "@/constants/IssueTypes";
 import { useSession } from "next-auth/react";
+import { enqueueSnackbar } from "notistack";
 
 export default function AddIssuePage() {
   const [pickerEnabled, setPickerEnabled] = useAtom(LocationPickerEnabled);
   const pickerCoords = useAtomValue(LocationPickerCoords);
+  const [formDisabled, setFormDisabled] = useState(false);
   const [locType, setLocType] = useState("");
   const [issueCategory, setIssueCategory] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [moreDetails, setMoreDetails] = useState("");
   const [priority, setPriority] = useState("medium");
+  const [photoFileList, setPhotoFileList] = useState<File[]>();
   const { status } = useSession();
+
+  useEffect(() => {
+    if (status !== "authenticated") {
+      setFormDisabled(true);
+      enqueueSnackbar("You must be logged in to add an issue.");
+    }
+  }, [setFormDisabled, status]);
 
   const submitIssue = () => {
     const requestBody = {
@@ -49,6 +59,7 @@ export default function AddIssuePage() {
       priority: priority,
     };
 
+    setFormDisabled(true);
     fetch("/api/issue/add", {
       method: "POST",
       headers: {
@@ -90,6 +101,7 @@ export default function AddIssuePage() {
           variant="standard"
           value={pickerCoords.lat + ", " + pickerCoords.lng}
           required
+          disabled={formDisabled}
           fullWidth
           InputProps={{
             readOnly: true,
@@ -111,7 +123,13 @@ export default function AddIssuePage() {
           }}
         />
 
-        <FormControl fullWidth variant="standard" color="secondary" required>
+        <FormControl
+          fullWidth
+          variant="standard"
+          color="secondary"
+          required
+          disabled={formDisabled}
+        >
           <InputLabel id="location-type-label">Location Type</InputLabel>
           <Select
             labelId="location-type-label"
@@ -142,11 +160,18 @@ export default function AddIssuePage() {
           variant="standard"
           fullWidth
           required
+          disabled={formDisabled}
           value={shortDescription}
           onChange={(event) => setShortDescription(event.target.value)}
         />
 
-        <FormControl fullWidth variant="standard" color="secondary" required>
+        <FormControl
+          fullWidth
+          variant="standard"
+          color="secondary"
+          required
+          disabled={formDisabled}
+        >
           <InputLabel id="issue-type-label">Issue Category</InputLabel>
           <Select
             labelId="issue-type-label"
@@ -193,6 +218,7 @@ export default function AddIssuePage() {
             size="small"
             fullWidth
             color="secondary"
+            disabled={formDisabled}
             aria-label="priority"
           >
             <ToggleButton value="low" aria-label="low priority">
@@ -217,9 +243,15 @@ export default function AddIssuePage() {
           onChange={(event) => setMoreDetails(event.target.value)}
           fullWidth
           multiline
+          disabled={formDisabled}
         />
 
-        <Button variant="contained" color="secondary" onClick={submitIssue}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={submitIssue}
+          disabled={formDisabled}
+        >
           Submit
         </Button>
       </Stack>

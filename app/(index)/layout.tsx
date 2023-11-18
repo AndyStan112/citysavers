@@ -7,10 +7,8 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import Navbar from "@/components/Navbar/Navbar";
-import LeafletMapWrap from "@/components/LeafletMap/LeafletMapWrap";
 import { SnackbarProvider } from "notistack";
-import { AccountCircle } from "@mui/icons-material";
+import { AccountCircle, Map } from "@mui/icons-material";
 import Link from "next/link";
 
 export default function IndexLayout({
@@ -25,13 +23,14 @@ export default function IndexLayout({
         <CssBaseline />
         <AppBar position="fixed" component="nav">
           <Toolbar>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               CitySavers
             </Typography>
+            <Link href="/map">
+              <Button endIcon={<Map />} sx={{ color: "#fff" }}>
+                Map
+              </Button>
+            </Link>
             <Link href="/login">
               <Button endIcon={<AccountCircle />} sx={{ color: "#fff" }}>
                 Login
@@ -39,7 +38,7 @@ export default function IndexLayout({
             </Link>
           </Toolbar>
         </AppBar>
-        <Box component="main" sx={{ p: 3 }}>
+        <Box component="main" sx={{ p: { xs: 2, sm: 3 }, width: "100dvw" }}>
           <Toolbar />
           {children}
         </Box>

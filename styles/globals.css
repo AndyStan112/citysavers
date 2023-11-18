@@ -1,3 +1,20 @@
 :root {
   --main-font: "Roboto", sans-serif;
 }
+
+.notistack-SnackbarContainer {
+  z-index: 1250 !important;
+}
+
+@media screen and (max-width: 600px) {
+  .notistack-SnackbarContainer {
+    bottom: 66px !important;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .notistack-SnackbarContainer {
+    left: 72px !important;
+    bottom: 6px !important;
+  }
+}

@@ -21,14 +21,14 @@ export default function UploadGallery({
   label?: string;
   max?: number;
   tileSize?: number;
-  onFileListChange?: (files: File[]) => void;
+  onFileListChange?: (fileURLs: string[]) => void;
 }) {
   const inputImageFile = useRef<HTMLInputElement>(null);
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
 
   const updateFileList = (imageList: UploadedImage[]) => {
     if (onFileListChange)
-      onFileListChange(imageList.map((image: UploadedImage) => image.file));
+      onFileListChange(imageList.map((image: UploadedImage) => image.imageUrl));
   };
 
   const handleAddButtonClick = () => {

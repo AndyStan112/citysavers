@@ -10,5 +10,11 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const id =  req.query.id;
-  res.status(200).json({ name: id })
+  try{
+    const issue = await prisma.issue.findUnique({where: {id}});
+    if(!issue)throw new Error("No issues with id found")
+    res.status(200).json(issue);
+  }catch(e:any){
+    res.status(400).json({error: e.message})
+  }
 }

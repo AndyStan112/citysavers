@@ -1,17 +1,34 @@
+"use client";
 import {
   Button,
-  Card,
+  Paper,
   Divider,
-  InputAdornment,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import { MailOutline, Google } from "@mui/icons-material";
+import { signIn } from "next-auth/react";
+import { enqueueSnackbar } from "notistack";
+import { FormEventHandler } from "react";
 
 export default function LoginPage() {
+  const logIn = (provider: string, email = undefined) => {
+    email ? signIn(provider, {}, email) : signIn(provider, {});
+  };
+
+  const emailLogin: FormEventHandler<HTMLFormElement> = (event) => {
+    enqueueSnackbar("Email authentication is unavailable at the moment.");
+    event.preventDefault();
+  };
+
+  const googleLogin = () => {
+    logIn("google");
+  };
+
   return (
-    <Card
+    <Paper
+      elevation={4}
       sx={{
         marginX: "auto",
         maxWidth: "400px",
@@ -39,6 +56,7 @@ export default function LoginPage() {
           flexDirection: "column",
           gap: "0.9rem",
         }}
+        onSubmit={emailLogin}
       >
         <TextField
           id="login-email"
@@ -46,7 +64,7 @@ export default function LoginPage() {
           label="Email Address"
           required
         />
-        <Button startIcon={<MailOutline />} variant="outlined">
+        <Button startIcon={<MailOutline />} variant="outlined" type="submit">
           Continue with Email
         </Button>
       </form>
@@ -55,9 +73,14 @@ export default function LoginPage() {
         <Typography>OR</Typography>
         <Divider sx={{ flex: 1, height: "13px" }} />
       </Stack>
-      <Button startIcon={<Google />} variant="outlined" color="secondary">
+      <Button
+        startIcon={<Google />}
+        variant="outlined"
+        color="secondary"
+        onClick={googleLogin}
+      >
         Continue with Google
       </Button>
-    </Card>
+    </Paper>
   );
 }

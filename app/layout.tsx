@@ -6,6 +6,7 @@ import "@fontsource/roboto/700.css";
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { createTheme, ThemeProvider } from "@mui/material";
+import IndexLayout from "./indexLayout";
 
 const theme = createTheme({
   palette: {
@@ -24,13 +25,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
+    <html lang="en">
       <head>
         <title>CitySavers</title>
       </head>
       <body>
         <ThemeProvider theme={theme}>
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <IndexLayout>{children}</IndexLayout>
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

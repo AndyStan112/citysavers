@@ -7,14 +7,16 @@ import { useState } from "react";
 
 function OverlayPage({
   animate = true,
-  closeButton = true,
   children,
+  className = "",
+  closeButton = true,
   fullHeight = false,
   minimized = false,
 }: {
   animate?: boolean;
-  closeButton?: boolean;
   children: React.ReactNode;
+  className?: string;
+  closeButton?: boolean;
   fullHeight?: boolean;
   minimized?: boolean;
 }) {
@@ -31,7 +33,8 @@ function OverlayPage({
   return (
     <div
       className={
-        "overlay-page " +
+        className +
+        " overlay-page " +
         (isOpen ? "" : "closed ") +
         (animate ? "animate " : "") +
         (minimized ? "minimized " : "") +

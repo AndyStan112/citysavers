@@ -5,6 +5,19 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#9c27b0",
+    },
+    secondary: {
+      main: "#1976d2",
+    },
+  },
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -16,7 +29,9 @@ export default function RootLayout({
         <title>CitySavers</title>
       </head>
       <body>
-        <SessionProvider>{children}</SessionProvider>
+        <ThemeProvider theme={theme}>
+          <SessionProvider>{children}</SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

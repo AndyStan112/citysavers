@@ -4,11 +4,15 @@ import GithubProvider from "next-auth/providers/github";
 import FacebookProvider from "next-auth/providers/facebook";
 import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
- import prisma from "../../../lib/prismadb";
- import { User } from "next-auth";
- import { AdapterUser } from "next-auth/adapters";
+import prisma from "../../../lib/prismadb";
+import { User } from "next-auth";
+import { AdapterUser } from "next-auth/adapters";
 import Google from "next-auth/providers/google";
-const handleLink = async (user : User | AdapterUser, profile : User | AdapterUser, prop:"image"|"name"|"role") => {
+const handleLink = async (
+  user: User | AdapterUser,
+  profile: User | AdapterUser,
+  prop: "image" | "name" | "role"
+) => {
   if (!user[prop] && profile[prop]) {
     await prisma.user.update({
       where: { id: user.id },
@@ -18,16 +22,17 @@ const handleLink = async (user : User | AdapterUser, profile : User | AdapterUse
 };
 
 export default NextAuth({
-   session: {
+  session: {
     strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
   callbacks: {
-        async jwt({ token, user }) {
+    async jwt({ token, user }) {
       return { ...token, ...user };
     },
     async session({ session, token }) {
       session.user.role = token.role as string;
+      session.user.id = token.sub as string;
       return session;
     },
     redirect({ url }) {
@@ -42,12 +47,11 @@ export default NextAuth({
     },
   },
   providers: [
-
     EmailProvider({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
     }),
-    GoogleProvider({  
+    GoogleProvider({
       profile(profile) {
         return {
           id: profile.sub,

@@ -61,7 +61,7 @@ model Issue {
   latitude   Float
 
   status           String    @default("pending")
-  statusMessage    String
+  statusMessage    String?
   category         String
   photosUrl        String[]
   dateAdded        DateTime? @default(now())

@@ -1,0 +1,16 @@
+.notistack-SnackbarContainer {
+  z-index: 1250 !important;
+}
+
+@media screen and (max-width: 600px) {
+  .notistack-SnackbarContainer {
+    bottom: calc(var(--navbar-mobile-height) + 6px) !important;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .notistack-SnackbarContainer {
+    left: calc(var(--navbar-desktop-width) + 14px) !important;
+    bottom: 6px !important;
+  }
+}

@@ -1,0 +1,32 @@
+.chips-list-wrap {
+  position: relative;
+  margin: 0 -18px;
+}
+
+.chips-list-wrap .chips-list {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  overflow-x: auto;
+  padding: 0 18px 8px;
+}
+
+.chips-list-wrap .chips-overflow-left {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 8px;
+  left: 0;
+  width: 25px;
+  background: linear-gradient(to right, white 10%, transparent);
+}
+
+.chips-list-wrap .chips-overflow-right {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 8px;
+  right: 0;
+  width: 25px;
+  background: linear-gradient(to right, transparent, white 90%);
+}

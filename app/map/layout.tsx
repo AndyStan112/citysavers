@@ -1,4 +1,5 @@
 "use client";
+import "./layout.css";
 import { CssBaseline } from "@mui/material";
 import Navbar from "@/components/Navbar/Navbar";
 import LeafletMapWrap from "@/components/LeafletMap/LeafletMapWrap";

@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prismadb";
-import { isAdmin } from "@/lib/checkAdmin";
+import { isAdmin } from "@/lib/util";
 import { STATUSES } from "@/constants/DbConstants";
 
 const getSolutions = async (type: string) => {

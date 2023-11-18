@@ -13,10 +13,10 @@ export default function UserMapLayout({
     <>
       <CssBaseline />
       <Navbar />
+      {children}
       <LeafletMap>
         <SearchBox />
       </LeafletMap>
-      {children}
     </>
   );
 }

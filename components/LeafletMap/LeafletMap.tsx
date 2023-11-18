@@ -18,8 +18,6 @@ export default function LeafletMap() {
       attributionControl={false}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-      <SearchBox />
       <MapAddIssue />
       <MapGeolocation />
       <LocationPicker />

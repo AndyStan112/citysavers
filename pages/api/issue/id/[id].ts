@@ -10,5 +10,5 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const id =  req.query.id;
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json({ name: id })
 }

@@ -19,6 +19,7 @@ model Account {
   refresh_token     String?
   access_token      String?
   expires_at        Int?
+  role              String  @default("USER")
   token_type        String?
   scope             String?
   id_token          String?
@@ -43,7 +44,7 @@ model User {
   email         String?    @unique
   emailVerified DateTime?
   image         String?
-  role          role       @default(USER)
+  role          String     @default("USER")
   phoneNumber   String?
   firstName     String?
   lastName      String?
@@ -53,18 +54,13 @@ model User {
   solutions     Solution[]
 }
 
-enum role {
-  USER
-  ADMIN
-}
-
 model Issue {
   id         String @id @default(cuid())
   reportedBy User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   longitude  Float
   latitude   Float
 
-  status        issue_status
+  status        String        @default("PENDING")
   statusMessage String
   issueCategory IssueCategory @relation(fields: [issueCategoryId], references: [id])
   photoUrl      String
@@ -84,19 +80,11 @@ enum priority {
   HIGH
 }
 
-enum issue_status {
-  PENDING
-  APPROVED
-  REJECTED
-  PENDING_SOLVED
-  SOLVED
-}
-
 model Solution {
-  id            String          @id @default(cuid())
-  issue         Issue           @relation(fields: [issueId], references: [id])
-  solvedBy      User            @relation(fields: [userId], references: [id])
-  status        solution_status
+  id            String        @id @default(cuid())
+  issue         Issue         @relation(fields: [issueId], references: [id])
+  solvedBy      User          @relation(fields: [userId], references: [id])
+  status        String        @default("PENDING")
   statusMessage String
   photoUrl      String
   description   String
@@ -118,12 +106,6 @@ model Transaction {
 
   @@unique([id, issueId])
   @@unique([id, solutionId])
-}
-
-enum solution_status {
-  PENDING
-  APPROVED
-  REJECTED
 }
 
 model IssueCategory {

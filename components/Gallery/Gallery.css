@@ -48,6 +48,7 @@
   left: 0;
   width: 25px;
   background: linear-gradient(to right, white 10%, transparent);
+  z-index: 1800;
 }
 
 .gallery-wrap .gallery-overflow-right {
@@ -57,7 +58,8 @@
   bottom: 8px;
   right: 0;
   width: 25px;
-  background: linear-gradient(to right, transparent, white 90%);
+  background: linear-gradient(to left, white 10%, transparent);
+  z-index: 1800;
 }
 
 .gallery-full-screen {

@@ -19,6 +19,7 @@
   left: 0;
   width: 25px;
   background: linear-gradient(to right, white 10%, transparent);
+  z-index: 1800;
 }
 
 .chips-list-wrap .chips-overflow-right {
@@ -29,4 +30,5 @@
   right: 0;
   width: 25px;
   background: linear-gradient(to right, transparent, white 90%);
+  z-index: 1800;
 }

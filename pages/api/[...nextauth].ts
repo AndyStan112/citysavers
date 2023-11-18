@@ -3,8 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import FacebookProvider from "next-auth/providers/facebook";
 import EmailProvider from "next-auth/providers/email";
-// import { PrismaAdapter } from "@next-auth/prisma-adapter";
-// import prisma from "../../../lib/prismadb";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+ import prisma from "../../lib/prismadb";
 
 // const handleLink = async (user, profile, prop) => {
 //   // console.log(prop);
@@ -18,7 +18,7 @@ import EmailProvider from "next-auth/providers/email";
 // };
 
 export default NextAuth({
-  //adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma),
   // callbacks: {
   //   async session({ session, token, user }) {
   //     session.id = user.id;

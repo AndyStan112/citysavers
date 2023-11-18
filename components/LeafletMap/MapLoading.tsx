@@ -17,7 +17,7 @@ export default function MapLoading() {
       }}
     >
       <CircularProgress color="secondary" />
-      <Typography variant="h5">Please wait, map is loading...</Typography>
+      <Typography variant="h6">Please wait, map is loading...</Typography>
     </div>
   );
 }

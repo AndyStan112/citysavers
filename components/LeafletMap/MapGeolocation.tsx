@@ -54,7 +54,7 @@ export default function MapGeolocation() {
     <>
       <Control prepend position="bottomright">
         <Fab
-          color="info"
+          sx={{ backgroundColor: "white" }}
           size="medium"
           aria-label="locate"
           onClick={locateButtonClick}

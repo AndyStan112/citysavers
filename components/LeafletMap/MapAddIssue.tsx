@@ -16,6 +16,7 @@ export default function MapAddIssue() {
         <Fab
           size="medium"
           aria-label="locate"
+          color="primary"
           onClick={() => {
             if (status === "authenticated") {
               router.push("/map/issue/add");

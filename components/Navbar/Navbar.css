@@ -4,7 +4,7 @@
   bottom: 0;
   left: 0;
   background-color: white;
-  z-index: 1999;
+  z-index: 1250;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;

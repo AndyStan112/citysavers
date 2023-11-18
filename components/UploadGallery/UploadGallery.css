@@ -1,0 +1,75 @@
+.upload-gallery-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  --tile-size: 60px;
+  user-select: none;
+}
+
+.upload-gallery-label {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: var(--main-font);
+}
+
+.upload-gallery {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-y: auto;
+  gap: 0.85em;
+  padding: 2px;
+  padding-bottom: 10px;
+}
+
+.upload-gallery .upload-button,
+.upload-gallery .upload-image {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  aspect-ratio: 1 / 1;
+  border-radius: 4px !important;
+  flex-shrink: 0;
+}
+
+.upload-gallery .upload-button {
+  border-style: dashed !important;
+  border-width: 2px !important;
+}
+
+.upload-gallery .upload-image {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  background-color: #fafafa;
+  font-size: 9pt;
+  position: relative;
+  overflow: hidden;
+}
+.upload-gallery .upload-image.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-image .image-preview {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: var(--tile-size);
+  height: var(--tile-size);
+  object-position: center;
+  object-fit: cover;
+}
+.upload-image .delete-button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 24px;
+  height: 24px;
+}
+.upload-image .delete-button svg {
+  width: 20px;
+  height: 20px;
+}

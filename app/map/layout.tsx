@@ -1,8 +1,8 @@
 "use client";
 import { CssBaseline } from "@mui/material";
 import Navbar from "@/components/Navbar/Navbar";
-import SearchBox from "@/components/MapSearch/SearchBox";
 import LeafletMapWrap from "@/components/LeafletMap/LeafletMapWrap";
+import { SnackbarProvider } from "notistack";
 
 export default function UserMapLayout({
   children,
@@ -11,6 +11,7 @@ export default function UserMapLayout({
 }) {
   return (
     <>
+      <SnackbarProvider />
       <CssBaseline />
       <Navbar />
       {children}

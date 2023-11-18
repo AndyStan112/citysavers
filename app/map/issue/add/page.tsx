@@ -15,6 +15,7 @@ import {
 import { LocationOn } from "@mui/icons-material";
 import { useState } from "react";
 import { LocationTypes } from "@/constants/LocationTypes";
+import UploadGallery from "@/components/UploadGallery/UploadGallery";
 
 export default function AddIssuePage() {
   const [locType, setLocType] = useState("");
@@ -60,7 +61,10 @@ export default function AddIssuePage() {
           >
             {LocationTypes.map(({ key, name, icon }) => (
               <MenuItem key={key} value={key}>
-                {icon} &nbsp; {name}
+                <Stack gap={0.75} direction="row">
+                  {icon}
+                  {name}
+                </Stack>
               </MenuItem>
             ))}
           </Select>
@@ -73,6 +77,7 @@ export default function AddIssuePage() {
           multiline
           required
         />
+        <UploadGallery />
         <Button variant="contained" color="secondary">
           Submit
         </Button>

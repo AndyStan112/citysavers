@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -10,14 +10,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-   return (
-        <html>
-            <head></head>
-            <body>
-                <SessionProvider>
-                        <>{children}</>
-                </SessionProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html>
+      <head>
+        <title>CitySavers</title>
+      </head>
+      <body>
+        <SessionProvider>{children}</SessionProvider>
+      </body>
+    </html>
+  );
 }

@@ -8,13 +8,15 @@ import { useState } from "react";
 function OverlayPage({
   animate = true,
   closeButton = true,
-  fullHeight = false,
   children,
+  fullHeight = false,
+  minimized = false,
 }: {
   animate?: boolean;
   closeButton?: boolean;
-  fullHeight?: boolean;
   children: React.ReactNode;
+  fullHeight?: boolean;
+  minimized?: boolean;
 }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
@@ -32,6 +34,7 @@ function OverlayPage({
         "overlay-page " +
         (isOpen ? "" : "closed ") +
         (animate ? "animate " : "") +
+        (minimized ? "minimized " : "") +
         (fullHeight ? "full-height" : "")
       }
     >

@@ -2,9 +2,9 @@
 import "leaflet/dist/leaflet.css";
 import "./LeafletMap.css";
 import { MapContainer, TileLayer } from "react-leaflet";
-import MapLocate from "./MapLocate";
 import MapAddIssue from "./MapAddIssue";
 import SearchBox from "../MapSearch/SearchBox";
+import MapGeolocation from "./MapGeolocation";
 
 export default function LeafletMap() {
   return (
@@ -20,7 +20,7 @@ export default function LeafletMap() {
 
       <SearchBox />
       <MapAddIssue />
-      <MapLocate />
+      <MapGeolocation />
     </MapContainer>
   );
 }

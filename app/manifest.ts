@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Report problems around your city",
     start_url: "/map",
     display: "standalone",
-    background_color: "#fff",
-    theme_color: "#fff",
+    background_color: "#6e1b7d",
+    theme_color: "#9c27b0",
     icons: [
       {
         src: "/favicon.ico",

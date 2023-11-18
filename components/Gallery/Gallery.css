@@ -88,6 +88,7 @@
   right: 20px;
   color: white;
   filter: drop-shadow(0 0 4px black);
+  z-index: 2005;
 }
 
 .MuiBackdrop-root {

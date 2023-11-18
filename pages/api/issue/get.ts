@@ -10,7 +10,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try{
-    const issues = await prisma.issue.findMany();
+    const issues = await prisma.issue.findMany({where:{status:'approved'}});
     res.status(200).json(issues);
   }catch(e){
     res.status(400).json({error: e})

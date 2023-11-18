@@ -1,8 +1,8 @@
 "use client";
 import { CssBaseline } from "@mui/material";
-import LeafletMap from "@/components/LeafletMap/LeafletMap";
 import Navbar from "@/components/Navbar/Navbar";
 import SearchBox from "@/components/MapSearch/SearchBox";
+import LeafletMapWrap from "@/components/LeafletMap/LeafletMapWrap";
 
 export default function UserMapLayout({
   children,
@@ -14,9 +14,7 @@ export default function UserMapLayout({
       <CssBaseline />
       <Navbar />
       {children}
-      <LeafletMap>
-        <SearchBox />
-      </LeafletMap>
+      <LeafletMapWrap />
     </>
   );
 }

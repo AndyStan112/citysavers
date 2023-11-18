@@ -61,7 +61,10 @@ export default function AddIssuePage() {
           >
             {LocationTypes.map(({ key, name, icon }) => (
               <MenuItem key={key} value={key}>
-                {icon} &nbsp; {name}
+                <Stack gap={0.75} direction="row">
+                  {icon}
+                  {name}
+                </Stack>
               </MenuItem>
             ))}
           </Select>

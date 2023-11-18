@@ -39,7 +39,7 @@ export default function UploadGallery({
       console.log(fileArray.length);
       if (fileArray.length + uploadedImages.length > max) {
         fileArray = fileArray.slice(0, max - uploadedImages.length);
-        console.log(fileArray.length);
+
         enqueueSnackbar(
           "Maximum number of images " +
             (fileArray.length == 0 ? "exceeded" : "reached")

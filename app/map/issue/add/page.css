@@ -1,0 +1,48 @@
+.add-issue-page {
+  gap: 0;
+}
+.add-issue-page.picking-location {
+  overflow: initial;
+}
+
+.add-issue-page .done-picking-button {
+  text-align: center;
+  margin-top: -37px;
+  visibility: hidden;
+  transition: visibility 0.2s;
+}
+.add-issue-page .done-picking-button button {
+  transform: scale(0);
+  transition: transform 0.1s;
+}
+.add-issue-page.picking-location .done-picking-button {
+  visibility: visible;
+}
+.add-issue-page.picking-location .done-picking-button button {
+  transform: scale(1);
+  transition-delay: 0.15s;
+}
+
+.add-issue-page .form-controls {
+  transition: opacity 0.3s, max-height 0.3s;
+}
+.add-issue-page.picking-location .form-controls {
+  opacity: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .add-issue-page.picking-location {
+    transform: translateY(calc(100% - 50px));
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .add-issue-page.picking-location {
+    /* transform: translateY(calc(100% - 50px)); */
+    height: 80px;
+  }
+  .add-issue-page .done-picking-button {
+    margin-top: 0;
+    height: 0;
+  }
+}

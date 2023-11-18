@@ -22,6 +22,9 @@
 .overlay-page.closed {
   transform: translateX(-100%);
 }
+.overlay-page.minimized {
+  transform: translateX(calc(-100% - 30px));
+}
 .overlay-page.animate {
   animation: overlay-page-open-anim 0.3s;
 }
@@ -75,6 +78,9 @@
   }
   .overlay-page.closed {
     transform: translateY(100%);
+  }
+  .overlay-page.minimized {
+    transform: translateY(calc(100% - 30px));
   }
   .overlay-page.animate {
     animation: overlay-page-open-anim-mobile 0.4s;

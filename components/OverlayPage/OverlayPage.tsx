@@ -3,6 +3,7 @@ import { IconButton } from "@mui/material";
 import "./OverlayPage.css";
 import { Close } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 function OverlayPage({
   animate = true,
@@ -16,11 +17,20 @@ function OverlayPage({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(true);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setTimeout(() => {
+      router.back();
+    }, 350);
+  };
 
   return (
     <div
       className={
         "overlay-page " +
+        (isOpen ? "" : "closed ") +
         (animate ? "animate " : "") +
         (fullHeight ? "full-height" : "")
       }
@@ -30,9 +40,7 @@ function OverlayPage({
           aria-label="close"
           className="overlay-page-close-btn"
           size="small"
-          onClick={() => {
-            router.back();
-          }}
+          onClick={handleClose}
         >
           <Close />
         </IconButton>

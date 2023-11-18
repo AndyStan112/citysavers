@@ -31,11 +31,11 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
+  id           String    @id @default(cuid())
+  sessionToken String    @unique
   userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime? @default(now())
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -60,20 +60,21 @@ model Issue {
   longitude  Float
   latitude   Float
 
-  status           String        @default("pending")
+  status           String    @default("pending")
   statusMessage    String
-  issueCategory    IssueCategory @relation(fields: [issueCategoryId], references: [id])
+  category         String
   photosUrl        String[]
-  dateAdded        DateTime
+  dateAdded        DateTime? @default(now())
   locationType     String
-  description      String
+  moreDetails      String?
   shortDescription String
 
   userId          String
-  issueCategoryId String
   priority        String
   Solution        Solution[]
   Transaction     Transaction[]
+  IssueCategory   IssueCategory? @relation(fields: [issueCategoryId], references: [id])
+  issueCategoryId String?
 }
 
 model Solution {
@@ -90,9 +91,9 @@ model Solution {
 }
 
 model Transaction {
-  id    String   @id @default(cuid())
+  id    String    @id @default(cuid())
   coins Int
-  date  DateTime
+  date  DateTime? @default(now())
 
   issue   Issue?  @relation(fields: [issueId], references: [id])
   issueId String?
@@ -115,8 +116,8 @@ model IssueCategory {
 
 model VerificationToken {
   identifier String
-  token      String   @unique
-  expires    DateTime
+  token      String    @unique
+  expires    DateTime? @default(now())
 
   @@unique([identifier, token])
 }

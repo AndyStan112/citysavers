@@ -1,0 +1,93 @@
+.gallery-wrap {
+  position: relative;
+  margin: 0 -18px;
+}
+
+.gallery-list {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 0 20px 14px;
+}
+
+.gallery-image {
+  background-color: #222;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+}
+.gallery-image::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1999;
+}
+.gallery-image:active::after {
+  opacity: 1;
+}
+.gallery-image-object {
+  object-fit: contain;
+}
+
+.gallery-wrap .gallery-overflow-left {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 8px;
+  left: 0;
+  width: 25px;
+  background: linear-gradient(to right, white 10%, transparent);
+}
+
+.gallery-wrap .gallery-overflow-right {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 8px;
+  right: 0;
+  width: 25px;
+  background: linear-gradient(to right, transparent, white 90%);
+}
+
+.gallery-full-screen {
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100dvw;
+  height: 100dvh;
+  pointer-events: none;
+  position: relative;
+  z-index: 2000;
+}
+
+.gallery-full-screen-image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  box-shadow: 0 0 20px black;
+  pointer-events: all;
+}
+
+.gallery-full-screen-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  filter: drop-shadow(0 0 4px black);
+}
+
+.MuiBackdrop-root {
+  z-index: -9999;
+}

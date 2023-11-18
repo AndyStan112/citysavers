@@ -8,7 +8,7 @@ const MapIcon = L.Icon.extend({
   },
 });
 
-const pickLocation = "map-icons/pick-location.svg";
+const pickLocation = "/map-icons/pick-location.svg";
 const PickLocationIcon = new MapIcon({
   iconUrl: pickLocation,
   iconRetinaUrl: pickLocation,
@@ -17,7 +17,7 @@ const PickLocationIcon = new MapIcon({
   popupAnchor: [0, -40],
 });
 
-const userLocation = "map-icons/user-location.svg";
+const userLocation = "/map-icons/user-location.svg";
 const UserLocationIcon = new MapIcon({
   iconUrl: userLocation,
   iconRetinaUrl: userLocation,

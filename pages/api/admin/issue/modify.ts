@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../lib/prismadb";
+import prisma from "@/lib/prismadb";
+import { isAdmin } from "@/lib/checkAdmin";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,30 +10,34 @@ export default async function handler(
   try {
     const {
       userId,
+      issueId,
       category,
       latitude,
       longitude,
       moreDetails,
+      status,
+      statusMessage,
       shortDescription,
-      photos,
+      photosUrl,
       locationType,
       priority,
     } = req.body;
-    await prisma.issue.create({
+
+    if (!isAdmin(userId)) throw new Error("User not admin");
+
+    await prisma.issue.update({
+      where: { id: issueId },
       data: {
-        userId,
         latitude,
+        status,
         longitude,
         locationType,
         category,
         priority,
         shortDescription,
         moreDetails,
-        statusMessage: "",
-        photosUrl: [
-          "https://lh3.googleusercontent.com/a/ACg8ocKs_gmz-cHo90Q18-J1iSjm58dJoEiCh2kRBoi3YRD7sPGy=s96-c",
-          "https://lh3.googleusercontent.com/a/ACg8ocKs_gmz-cHo90Q18-J1iSjm58dJoEiCh2kRBoi3YRD7sPGy=s96-c",
-        ],
+        statusMessage,
+        photosUrl,
       },
     });
     res.status(200).json({ name: "John Doe" });

@@ -5,6 +5,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import MapAddIssue from "./MapAddIssue";
 import SearchBox from "../MapSearch/SearchBox";
 import MapGeolocation from "./MapGeolocation";
+import LocationPicker from "./LocationPicker";
 
 export default function LeafletMap() {
   return (
@@ -21,6 +22,7 @@ export default function LeafletMap() {
       <SearchBox />
       <MapAddIssue />
       <MapGeolocation />
+      <LocationPicker />
     </MapContainer>
   );
 }

@@ -2,7 +2,7 @@ import "./UploadGallery.css";
 import { Add } from "@mui/icons-material";
 import { Button, Snackbar } from "@mui/material";
 import UploadImage from "./UploadImage";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { enqueueSnackbar } from "notistack";
 
 interface UploadedImage {
@@ -15,14 +15,21 @@ export default function UploadGallery({
   label = "Images",
   max = 8,
   tileSize = 60,
+  onFileListChange,
 }: {
   disabled?: boolean;
   label?: string;
   max?: number;
   tileSize?: number;
+  onFileListChange?: (files: File[]) => void;
 }) {
   const inputImageFile = useRef<HTMLInputElement>(null);
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
+
+  const updateFileList = (imageList: UploadedImage[]) => {
+    if (onFileListChange)
+      onFileListChange(imageList.map((image: UploadedImage) => image.file));
+  };
 
   const handleAddButtonClick = () => {
     if (inputImageFile.current) {
@@ -36,7 +43,6 @@ export default function UploadGallery({
     if (files) {
       let fileArray = Array.from(files);
 
-      console.log(fileArray.length);
       if (fileArray.length + uploadedImages.length > max) {
         fileArray = fileArray.slice(0, max - uploadedImages.length);
 
@@ -51,11 +57,13 @@ export default function UploadGallery({
         imageUrl: URL.createObjectURL(file),
       }));
 
+      updateFileList([...uploadedImages, ...newImages]);
       setUploadedImages((prevImages) => [...prevImages, ...newImages]);
     }
   };
 
   const handleDeleteButtonClick = (index: number) => {
+    updateFileList(uploadedImages.filter((_, i) => i !== index));
     setUploadedImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 

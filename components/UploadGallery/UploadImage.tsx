@@ -16,7 +16,7 @@ export default function UploadImage({
   return (
     <div className={"upload-image " + (loading ? "loading" : "")}>
       {loading ? (
-        <CircularProgress color="secondary" size="20px" />
+        <CircularProgress size="20px" />
       ) : (
         <>
           <Image

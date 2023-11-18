@@ -44,9 +44,8 @@ export default function AddIssuePage() {
   useEffect(() => {
     if (status !== "authenticated") {
       setFormDisabled(true);
-      enqueueSnackbar("You must be logged in to add an issue.");
     }
-  }, [setFormDisabled, status]);
+  }, [status]);
 
   const submitIssue = () => {
     const requestBody = {
@@ -58,6 +57,7 @@ export default function AddIssuePage() {
       shortDescription: shortDescription,
       moreDetails: moreDetails,
       priority: priority,
+      photos: photoFileList,
     };
 
     setFormDisabled(true);
@@ -71,9 +71,13 @@ export default function AddIssuePage() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        enqueueSnackbar("Submission was successful!");
+        setFormDisabled(false);
       })
       .catch((error) => {
         console.log(error);
+        enqueueSnackbar("An error occurred!");
+        setFormDisabled(false);
       });
   };
 
@@ -85,7 +89,6 @@ export default function AddIssuePage() {
       <div className="done-picking-button">
         <Fab
           variant="extended"
-          color="secondary"
           size="medium"
           onClick={() => setPickerEnabled(false)}
         >
@@ -98,7 +101,6 @@ export default function AddIssuePage() {
 
         <TextField
           label="Location"
-          color="secondary"
           variant="standard"
           value={pickerCoords.lat + ", " + pickerCoords.lng}
           required
@@ -114,8 +116,8 @@ export default function AddIssuePage() {
             endAdornment: (
               <InputAdornment position="end">
                 <Button
-                  color="secondary"
                   onClick={() => setPickerEnabled(true)}
+                  disabled={formDisabled}
                 >
                   Pick on map
                 </Button>
@@ -127,7 +129,6 @@ export default function AddIssuePage() {
         <FormControl
           fullWidth
           variant="standard"
-          color="secondary"
           required
           disabled={formDisabled}
         >
@@ -137,7 +138,6 @@ export default function AddIssuePage() {
             id="location-type"
             value={locType}
             label="Location Type"
-            color="secondary"
             variant="standard"
             required
             onChange={(event: SelectChangeEvent) => {
@@ -157,7 +157,6 @@ export default function AddIssuePage() {
 
         <TextField
           label="Short description"
-          color="secondary"
           variant="standard"
           fullWidth
           required
@@ -169,7 +168,6 @@ export default function AddIssuePage() {
         <FormControl
           fullWidth
           variant="standard"
-          color="secondary"
           required
           disabled={formDisabled}
         >
@@ -179,7 +177,6 @@ export default function AddIssuePage() {
             id="issue-type"
             value={issueCategory}
             label="Issue Category"
-            color="secondary"
             variant="standard"
             required
             onChange={(event: SelectChangeEvent) => {
@@ -218,7 +215,6 @@ export default function AddIssuePage() {
             }}
             size="small"
             fullWidth
-            color="secondary"
             disabled={formDisabled}
             aria-label="priority"
           >
@@ -234,11 +230,16 @@ export default function AddIssuePage() {
           </ToggleButtonGroup>
         </div>
 
-        <UploadGallery />
+        <UploadGallery
+          disabled={formDisabled}
+          onFileListChange={(files) => {
+            setPhotoFileList(files);
+            console.log(files);
+          }}
+        />
 
         <TextField
           label="More details"
-          color="secondary"
           variant="standard"
           value={moreDetails}
           onChange={(event) => setMoreDetails(event.target.value)}
@@ -249,7 +250,6 @@ export default function AddIssuePage() {
 
         <Button
           variant="contained"
-          color="secondary"
           onClick={submitIssue}
           disabled={formDisabled}
         >

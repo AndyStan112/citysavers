@@ -3,7 +3,7 @@
   position: fixed;
   top: 65px;
   left: 60px;
-  overflow-x: auto;
+  overflow-x: hidden;
   background-color: white;
   display: flex;
   box-sizing: border-box;

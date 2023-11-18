@@ -36,10 +36,11 @@ export default function AddIssuePage() {
   const [shortDescription, setShortDescription] = useState("");
   const [moreDetails, setMoreDetails] = useState("");
   const [priority, setPriority] = useState("medium");
-  const { status } = useSession();
+  const { data: session, status } = useSession();
 
   const submitIssue = () => {
     const requestBody = {
+      userId: session?.user.id,
       category: issueCategory,
       locationType: locType,
       latitude: pickerCoords.lat,

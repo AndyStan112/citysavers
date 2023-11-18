@@ -3,6 +3,7 @@ import "leaflet/dist/leaflet.css";
 import "./LeafletMap.css";
 import { MapContainer, TileLayer } from "react-leaflet";
 import MapLocate from "./MapLocate";
+import MapAddIssue from "./MapAddIssue";
 
 export default function LeafletMap({
   children,
@@ -19,6 +20,7 @@ export default function LeafletMap({
       attributionControl={false}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <MapAddIssue />
       <MapLocate />
       {children}
       {/* <ZoomControl position="bottomright" /> */}

@@ -1,7 +1,7 @@
 .leaflet-container {
   position: fixed;
-  top: 0;
-  left: var(--navbar-desktop-width);
+  top: var(--main-navbar-height);
+  left: var(--map-navbar-desktop-width);
   right: 0;
   bottom: 0;
   z-index: 0;
@@ -21,6 +21,6 @@
 @media screen and (max-width: 600px) {
   .leaflet-container {
     left: 0;
-    bottom: var(--navbar-mobile-height);
+    bottom: var(--map-navbar-mobile-height);
   }
 }

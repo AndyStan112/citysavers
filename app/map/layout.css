@@ -4,13 +4,13 @@
 
 @media screen and (max-width: 600px) {
   .notistack-SnackbarContainer {
-    bottom: calc(var(--navbar-mobile-height) + 6px) !important;
+    bottom: calc(var(--map-navbar-mobile-height) + 6px) !important;
   }
 }
 
 @media screen and (min-width: 600px) {
   .notistack-SnackbarContainer {
-    left: calc(var(--navbar-desktop-width) + 14px) !important;
+    left: calc(var(--map-navbar-desktop-width) + 14px) !important;
     bottom: 6px !important;
   }
 }

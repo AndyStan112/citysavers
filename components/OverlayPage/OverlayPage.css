@@ -1,14 +1,14 @@
 .overlay-page {
   z-index: 1100;
   position: fixed;
-  top: 64px;
-  left: var(--navbar-desktop-width);
+  top: var(--main-navbar-height);
+  left: var(--map-navbar-desktop-width);
   overflow-x: hidden;
   background-color: white;
   display: flex;
   box-sizing: border-box;
   width: 430px;
-  max-height: calc(100dvh - 80px);
+  max-height: calc(100dvh - var(--main-navbar-height));
   border-radius: 0 0 10px 0;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
   padding: 16px;
@@ -72,11 +72,11 @@
     top: unset;
     right: 0;
     left: 0;
-    bottom: var(--navbar-mobile-height);
+    bottom: var(--map-navbar-mobile-height);
     padding: 18px;
     min-width: 0;
     width: unset;
-    max-height: calc(80dvh - var(--navbar-mobile-height));
+    max-height: calc(80dvh - var(--map-navbar-mobile-height));
   }
   .overlay-page.closed {
     transform: translateY(100%);

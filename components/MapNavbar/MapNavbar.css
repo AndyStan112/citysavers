@@ -1,11 +1,11 @@
 :root {
-  --navbar-desktop-width: 70px;
-  --navbar-mobile-height: 64px;
+  --map-navbar-desktop-width: 70px;
+  --map-navbar-mobile-height: 64px;
 }
 
 .navbar {
   position: fixed;
-  top: 64px;
+  top: var(--main-navbar-height);
   bottom: 0;
   left: 0;
   background-color: white;
@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
   user-select: none;
-  width: var(--navbar-desktop-width);
+  width: var(--map-navbar-desktop-width);
 }
 
 .navbar .spacer {
@@ -45,7 +45,7 @@
     right: 0;
     flex-direction: row;
     width: 100%;
-    height: var(--navbar-mobile-height);
+    height: var(--map-navbar-mobile-height);
   }
 
   .navbar .spacer {

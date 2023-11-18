@@ -16,7 +16,7 @@ export default function MapLoading() {
         gap: "1em",
       }}
     >
-      <CircularProgress color="secondary" />
+      <CircularProgress />
       <Typography variant="h6">Please wait, map is loading...</Typography>
     </div>
   );

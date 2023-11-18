@@ -14,7 +14,6 @@ export default function MapAddIssue() {
     <>
       <Control prepend position="bottomright">
         <Fab
-          color="secondary"
           size="medium"
           aria-label="locate"
           onClick={() => {

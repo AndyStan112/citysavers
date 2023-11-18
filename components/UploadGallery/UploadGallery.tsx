@@ -86,7 +86,6 @@ export default function UploadGallery({
           ))}
           <Button
             className="upload-button"
-            color="secondary"
             variant="outlined"
             disabled={disabled || uploadedImages.length == max}
             onClick={handleAddButtonClick}

@@ -38,7 +38,7 @@ export default function AddIssuePage() {
   const [shortDescription, setShortDescription] = useState("");
   const [moreDetails, setMoreDetails] = useState("");
   const [priority, setPriority] = useState("medium");
-  const [photoFileList, setPhotoFileList] = useState<File[]>();
+  const [photoFileList, setPhotoFileList] = useState<string[]>();
   const { data: session, status } = useSession();
 
   useEffect(() => {
@@ -90,6 +90,7 @@ export default function AddIssuePage() {
         <Fab
           variant="extended"
           size="medium"
+          color="primary"
           onClick={() => setPickerEnabled(false)}
         >
           <Done sx={{ mr: 1 }} />

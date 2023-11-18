@@ -60,24 +60,20 @@ model Issue {
   longitude  Float
   latitude   Float
 
-  status        String        @default("pending")
-  statusMessage String
-  issueCategory IssueCategory @relation(fields: [issueCategoryId], references: [id])
-  photoUrl      String
-  dateAdded     DateTime
-  locationType  String
+  status           String        @default("pending")
+  statusMessage    String
+  issueCategory    IssueCategory @relation(fields: [issueCategoryId], references: [id])
+  photosUrl        String[]
+  dateAdded        DateTime
+  locationType     String
+  description      String
+  shortDescription String
 
   userId          String
   issueCategoryId String
-  priority        priority
+  priority        String
   Solution        Solution[]
   Transaction     Transaction[]
-}
-
-enum priority {
-  LOW
-  MEDIUM
-  HIGH
 }
 
 model Solution {
@@ -86,7 +82,7 @@ model Solution {
   solvedBy      User          @relation(fields: [userId], references: [id])
   status        String        @default("pending")
   statusMessage String
-  photoUrl      String
+  photosUrl     String[]
   description   String
   issueId       String
   userId        String

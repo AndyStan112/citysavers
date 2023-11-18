@@ -1,9 +1,12 @@
 "use client";
 import { AppBar, Button, Toolbar, Typography } from "@mui/material";
 import { AccountCircle, Map } from "@mui/icons-material";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function MainNavbar() {
+  const { status } = useSession();
+
   return (
     <AppBar position="fixed" component="nav" sx={{ zIndex: 1300 }}>
       <Toolbar>
@@ -15,11 +18,19 @@ export default function MainNavbar() {
             Map
           </Button>
         </Link>
-        <Link href="/login">
-          <Button endIcon={<AccountCircle />} sx={{ color: "#fff" }}>
-            Login
-          </Button>
-        </Link>
+        {status === "authenticated" ? (
+          <Link href="/account">
+            <Button endIcon={<AccountCircle />} sx={{ color: "#fff" }}>
+              Account
+            </Button>
+          </Link>
+        ) : (
+          <Link href="/login">
+            <Button endIcon={<AccountCircle />} sx={{ color: "#fff" }}>
+              Login
+            </Button>
+          </Link>
+        )}
       </Toolbar>
     </AppBar>
   );

@@ -4,12 +4,9 @@ import "./LeafletMap.css";
 import { MapContainer, TileLayer } from "react-leaflet";
 import MapLocate from "./MapLocate";
 import MapAddIssue from "./MapAddIssue";
+import SearchBox from "../MapSearch/SearchBox";
 
-export default function LeafletMap({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function LeafletMap() {
   return (
     <MapContainer
       center={[45.754, 21.226]}
@@ -20,10 +17,10 @@ export default function LeafletMap({
       attributionControl={false}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+      <SearchBox />
       <MapAddIssue />
       <MapLocate />
-      {children}
-      {/* <ZoomControl position="bottomright" /> */}
     </MapContainer>
   );
 }

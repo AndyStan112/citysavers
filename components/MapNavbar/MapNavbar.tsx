@@ -1,5 +1,5 @@
 "use client";
-import "./Navbar.css";
+import "./MapNavbar.css";
 import {
   MapOutlined,
   TaskAltOutlined,
@@ -10,7 +10,7 @@ import { Button } from "@mui/material";
 
 import { useRouter } from "next/navigation";
 
-export default function Navbar() {
+export default function MapNavbar() {
   const router = useRouter();
 
   const navbarButtonList = [

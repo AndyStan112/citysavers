@@ -44,9 +44,8 @@ export default function AddIssuePage() {
   useEffect(() => {
     if (status !== "authenticated") {
       setFormDisabled(true);
-      enqueueSnackbar("You must be logged in to add an issue.");
     }
-  }, [setFormDisabled, status]);
+  }, [status]);
 
   const submitIssue = () => {
     const requestBody = {
@@ -58,6 +57,7 @@ export default function AddIssuePage() {
       shortDescription: shortDescription,
       moreDetails: moreDetails,
       priority: priority,
+      photos: photoFileList,
     };
 
     setFormDisabled(true);
@@ -71,9 +71,13 @@ export default function AddIssuePage() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        enqueueSnackbar("Submission was successful!");
+        setFormDisabled(false);
       })
       .catch((error) => {
         console.log(error);
+        enqueueSnackbar("An error occurred!");
+        setFormDisabled(false);
       });
   };
 
@@ -116,6 +120,7 @@ export default function AddIssuePage() {
                 <Button
                   color="secondary"
                   onClick={() => setPickerEnabled(true)}
+                  disabled={formDisabled}
                 >
                   Pick on map
                 </Button>
@@ -234,7 +239,13 @@ export default function AddIssuePage() {
           </ToggleButtonGroup>
         </div>
 
-        <UploadGallery />
+        <UploadGallery
+          disabled={formDisabled}
+          onFileListChange={(files) => {
+            setPhotoFileList(files);
+            console.log(files);
+          }}
+        />
 
         <TextField
           label="More details"

@@ -19,6 +19,7 @@ model Account {
   refresh_token     String?
   access_token      String?
   expires_at        Int?
+  role              String  @default("user")
   token_type        String?
   scope             String?
   id_token          String?
@@ -38,17 +39,82 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
-  role          String    @default("user")
+  role          String     @default("user")
   phoneNumber   String?
   firstName     String?
   lastName      String?
   accounts      Account[]
   sessions      Session[]
+  issues        Issue[]
+  solutions     Solution[]
+}
+
+model Issue {
+  id         String @id @default(cuid())
+  reportedBy User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  longitude  Float
+  latitude   Float
+
+  status        String        @default("pending")
+  statusMessage String
+  issueCategory IssueCategory @relation(fields: [issueCategoryId], references: [id])
+  photoUrl      String
+  dateAdded     DateTime
+  locationType  String
+
+  userId          String
+  issueCategoryId String
+  priority        priority
+  Solution        Solution[]
+  Transaction     Transaction[]
+}
+
+enum priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Solution {
+  id            String        @id @default(cuid())
+  issue         Issue         @relation(fields: [issueId], references: [id])
+  solvedBy      User          @relation(fields: [userId], references: [id])
+  status        String        @default("pending")
+  statusMessage String
+  photoUrl      String
+  description   String
+  issueId       String
+  userId        String
+  Transaction   Transaction[]
+}
+
+model Transaction {
+  id    String   @id @default(cuid())
+  coins Int
+  date  DateTime
+
+  issue   Issue?  @relation(fields: [issueId], references: [id])
+  issueId String?
+
+  solution   Solution? @relation(fields: [solutionId], references: [id])
+  solutionId String?
+
+  @@unique([id, issueId])
+  @@unique([id, solutionId])
+}
+
+model IssueCategory {
+  id                  String  @id @default(cuid())
+  shortName           String
+  longName            String
+  icon                String
+  isCommunitySolvable Boolean
+  Issue               Issue[]
 }
 
 model VerificationToken {

@@ -11,7 +11,7 @@ export default function UserMapLayout({
 }) {
   return (
     <>
-      <SnackbarProvider />
+      <SnackbarProvider maxSnack={2} preventDuplicate />
       <CssBaseline />
       <Navbar />
       {children}

@@ -39,7 +39,7 @@ export default function AddIssuePage() {
   const [moreDetails, setMoreDetails] = useState("");
   const [priority, setPriority] = useState("medium");
   const [photoFileList, setPhotoFileList] = useState<File[]>();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     if (status !== "authenticated") {
@@ -50,6 +50,7 @@ export default function AddIssuePage() {
 
   const submitIssue = () => {
     const requestBody = {
+      userId: session?.user.id,
       category: issueCategory,
       locationType: locType,
       latitude: pickerCoords.lat,

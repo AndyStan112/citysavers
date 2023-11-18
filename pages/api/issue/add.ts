@@ -10,6 +10,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const {
+    userId,
     category,
     latitude,
     longitude,
@@ -21,7 +22,7 @@ export default async function handler(
   } = req.body;
   await prisma.issue.create({
     data: {
-      userId: "colega",
+      userId,
       latitude,
       longitude,
       locationType,

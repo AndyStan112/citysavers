@@ -45,6 +45,7 @@ model User {
   emailVerified DateTime?
   image         String?
   role          String     @default("user")
+  coins         Int        @default(0)
   phoneNumber   String?
   firstName     String?
   lastName      String?
@@ -98,9 +99,6 @@ model Transaction {
 
   solution   Solution? @relation(fields: [solutionId], references: [id])
   solutionId String?
-
-  @@unique([id, issueId])
-  @@unique([id, solutionId])
 }
 
 model VerificationToken {

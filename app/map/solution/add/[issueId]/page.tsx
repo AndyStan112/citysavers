@@ -46,7 +46,7 @@ export default function AddSolutionPage({
         // console.log(data);
         enqueueSnackbar("Submission was successful!");
         setFormDisabled(false);
-        router.push("/map/issue/" + data.id);
+        router.push("/map/solution/" + data.id);
       })
       .catch((error) => {
         console.log(error);

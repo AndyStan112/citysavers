@@ -22,29 +22,22 @@ export default function ViewSolutionPage({
   const [solutionData, setSolutionData] = useState<any>(null);
 
   useEffect(() => {
-    // if (!solutionData) {
-    //   fetch("/api/solution/id/" + params.id)
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //       console.log(data);
-    //       if (data.error == "Not found") {
-    //         enqueueSnackbar(`Solution with id: "${params.id}" not found.`);
-    //       } else {
-    //         setSolutionData(data);
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //       enqueueSnackbar("An error occurred.");
-    //     });
-    // }
-    setSolutionData({
-      shortDescription: "Solution description",
-      status: "pending",
-      moreDetails: "test",
-      photosUrl: [],
-      issueId: "43567890",
-    });
+    if (!solutionData) {
+      fetch("/api/solution/id/" + params.id)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.error == "Not found") {
+            enqueueSnackbar(`Solution with id: "${params.id}" not found.`);
+          } else {
+            setSolutionData(data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          enqueueSnackbar("An error occurred.");
+        });
+    }
   }, [solutionData, params.id]);
 
   return (
@@ -84,7 +77,6 @@ export default function ViewSolutionPage({
             ) : (
               <></>
             )}
-            {/* <Chip avatar={<Avatar>AU</Avatar>} label="App User" size="small" /> */}
           </ChipsList>
           <Typography>Images:</Typography>
           <Gallery imageList={solutionData.photosUrl} />

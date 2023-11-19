@@ -3,9 +3,12 @@ import { Logout } from "@mui/icons-material";
 import {
   Avatar,
   Box,
+  Button,
+  Divider,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -20,9 +23,10 @@ import {
   TableHead,
   TableRow,
   Tabs,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { DataGrid, GRID_STRING_COL_DEF, GridColDef } from "@mui/x-data-grid";
 import { Session } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -33,6 +37,7 @@ export default function AdminPage() {
   const { status, data } = useSession();
   const router = useRouter();
   const [issuesArray, setIssuesArray] = useState([]);
+  const [pendingType, setPendingType] = useState("issue");
 
   useEffect(() => {
     fetch("/api/admin/issue/get?type=all")
@@ -53,7 +58,7 @@ export default function AdminPage() {
       enqueueSnackbar("You do not have privileges");
       router.replace("/login");
     }
-  }, [router, status]);
+  }, [data?.user.role, router, status]);
 
   return (
     <Box
@@ -61,8 +66,111 @@ export default function AdminPage() {
         flexGrow: 1,
         bgcolor: "background.paper",
         display: "flex",
-        height: "100%",
+        height: "calc(100vh - 115px)",
       }}
-    ></Box>
+    >
+      <Stack
+        direction="row"
+        gap={3}
+        sx={{ width: "100%", alignItems: "stretch" }}
+      >
+        <Paper sx={{ flex: 1 }} elevation={3}>
+          <Stack>
+            <Stack direction="row">
+              <Typography sx={{ p: "8px 16px" }}>Pending</Typography>
+              <ToggleButtonGroup
+                value={pendingType}
+                exclusive
+                onChange={(
+                  event: React.MouseEvent<HTMLElement>,
+                  newPriority: string
+                ) => {
+                  setPendingType(newPriority);
+                }}
+                size="small"
+                color="primary"
+                fullWidth
+              >
+                <ToggleButton value="issue">Issue</ToggleButton>
+                <ToggleButton value="solution">Solution</ToggleButton>
+              </ToggleButtonGroup>
+            </Stack>
+            <Divider />
+            <List>
+              <ListItemButton>
+                <ListItemText primary="Issue Short Description" />
+              </ListItemButton>
+            </List>
+          </Stack>
+        </Paper>
+        <Paper
+          sx={{
+            flex: 2,
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            height: "100%",
+          }}
+          elevation={3}
+        >
+          <Stack direction="row" sx={{ width: "100%" }}>
+            <Box sx={{ flex: 1 }}>
+              <Stack sx={{ height: "100%" }}>
+                <Typography
+                  sx={{
+                    padding: "6px 10px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Issue
+                </Typography>
+                <Divider />
+                <Box sx={{ flex: 4, oveflowY: "auto" }}></Box>
+                <Divider />
+                <Stack direction="row" sx={{ height: "38px" }}>
+                  <Button fullWidth color="success">
+                    Approve
+                  </Button>
+                  <Divider orientation="vertical" />
+                  <Button fullWidth color="error">
+                    Reject
+                  </Button>
+                </Stack>
+              </Stack>
+            </Box>
+            <Divider
+              orientation="vertical"
+              sx={{ width: "1px", height: "100%" }}
+            />
+            <Box sx={{ flex: 1 }}>
+              <Stack sx={{ height: "100%" }}>
+                <Typography
+                  sx={{
+                    padding: "6px 10px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Solution
+                </Typography>
+                <Divider />
+                <Box sx={{ flex: 4, oveflowY: "auto" }}></Box>
+                <Divider />
+                <Stack direction="row" sx={{ height: "38px" }}>
+                  <Button fullWidth color="success">
+                    Approve
+                  </Button>
+                  <Divider orientation="vertical" />
+                  <Button fullWidth color="error">
+                    Reject
+                  </Button>
+                </Stack>
+              </Stack>
+            </Box>
+          </Stack>
+        </Paper>
+      </Stack>
+    </Box>
   );
 }

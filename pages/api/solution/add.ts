@@ -6,35 +6,25 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  //  userId: session?.user.id,
+  //     issueId: params.issueId,
+  //     shortDescription: shortDescription,
+  //     moreDetails: moreDetails,
+  //     photosUrl: photoFileList,
   try {
-    const {
-      userId,
-      category,
-      latitude,
-      longitude,
-      moreDetails,
-      shortDescription,
-      photosUrl,
-      locationType,
-      priority,
-    } = req.body;
-    const newIssue = await prisma.issue.create({
+    const { userId, issueId, shortDescription, photosUrl } = req.body;
+    const newIssue = await prisma.solution.create({
       data: {
         userId,
-        latitude,
-        longitude,
-        locationType,
-        category,
-        priority,
-        shortDescription,
-        moreDetails,
+        issueId,
+        description: shortDescription,
         statusMessage: "",
         photosUrl: photosUrl,
       },
     });
     res
       .status(200)
-      .json({ id: newIssue.id, message: "issue successfully created" });
+      .json({ id: newIssue.id, message: "solution successfully created" });
   } catch (e: any) {
     res.status(400).json({ error: e.message });
   }

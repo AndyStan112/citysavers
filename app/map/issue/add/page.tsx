@@ -28,6 +28,7 @@ import "./page.css";
 import { IssueTypes } from "@/constants/IssueTypes";
 import { useSession } from "next-auth/react";
 import { enqueueSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 export default function AddIssuePage() {
   const [pickerEnabled, setPickerEnabled] = useAtom(LocationPickerEnabled);
@@ -40,6 +41,7 @@ export default function AddIssuePage() {
   const [priority, setPriority] = useState("medium");
   const [photoFileList, setPhotoFileList] = useState<string[]>();
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (status !== "authenticated") {
@@ -57,7 +59,7 @@ export default function AddIssuePage() {
       shortDescription: shortDescription,
       moreDetails: moreDetails,
       priority: priority,
-      photos: photoFileList,
+      photosUrl: photoFileList,
     };
 
     setFormDisabled(true);
@@ -73,6 +75,7 @@ export default function AddIssuePage() {
         console.log(data);
         enqueueSnackbar("Submission was successful!");
         setFormDisabled(false);
+        router.push("/map/issue/" + data.id);
       })
       .catch((error) => {
         console.log(error);

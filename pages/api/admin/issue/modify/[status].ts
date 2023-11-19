@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prismadb";
 import { isAdmin } from "@/lib/util";
-import { P_TO_ISSUE } from "@/constants/DbConstants";
+import { P_TO_ISSUE, Priority, StatusMod } from "@/constants/DbConstants";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,8 +18,7 @@ export default async function handler(
     // const userId = "clp59dk0d000ahs6b0hgvaoxg";
     //const status = "approved";
     if (!isAdmin(userId)) throw new Error("User not admin");
-    // @ts-ignore
-    const coins = P_TO_ISSUE[priority];
+    const coins = P_TO_ISSUE[priority as Priority];
     console.log(coins);
     const STATUS_TO_COIN_CHANGE = {
       rejected: { decrement: coins },
@@ -43,8 +42,7 @@ export default async function handler(
       }),
       prisma.user.update({
         where: { id: reportedById },
-        //@ts-ignore
-        data: { coins: STATUS_TO_COIN_CHANGE[status] },
+        data: { coins: STATUS_TO_COIN_CHANGE[status as StatusMod] },
       }),
       prisma.transaction.create({
         data: {

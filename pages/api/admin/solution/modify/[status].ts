@@ -1,9 +1,13 @@
-//@ts-nocheck
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prismadb";
 import { isAdmin } from "@/lib/util";
-import { P_TO_ISSUE, P_TO_SOLUTION } from "@/constants/DbConstants";
+import {
+  P_TO_ISSUE,
+  P_TO_SOLUTION,
+  Priority,
+  StatusMod,
+} from "@/constants/DbConstants";
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,7 +23,7 @@ export default async function handler(
     // const userId = "clp59dk0d000ahs6b0hgvaoxg";
     // const solutionId = "test";
     if (!isAdmin(userId)) throw new Error("User not admin");
-    const coins = P_TO_SOLUTION[priority];
+    const coins = P_TO_SOLUTION[priority as Priority];
     console.log(coins);
     const STATUS_TO_COIN_CHANGE = {
       rejected: { decrement: coins },
@@ -43,7 +47,7 @@ export default async function handler(
       }),
       prisma.user.update({
         where: { id: solverId },
-        data: { coins: STATUS_TO_COIN_CHANGE[status] },
+        data: { coins: STATUS_TO_COIN_CHANGE[status as StatusMod] },
       }),
       prisma.transaction.create({
         data: {
@@ -53,13 +57,12 @@ export default async function handler(
       }),
     ];
     if (status === "approved")
-      transation = [
-        ...transation,
+      transation.push(
         prisma.issue.update({
           where: { id: issueId },
           data: { status: "solved" },
-        }),
-      ];
+        }) as any
+      );
     await prisma.$transaction(transation);
     res.status(200).json({ name: "John Doe" });
   } catch (e: any) {

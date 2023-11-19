@@ -8,14 +8,24 @@ import {
   Typography,
 } from "@mui/material";
 import { MailOutline, Google } from "@mui/icons-material";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect } from "react";
 
 export default function LoginPage() {
   // const logIn = (provider: string, email = undefined) => {
   //   email ? signIn(provider, {}, email) : signIn(provider, {});
   // };
+
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/account");
+    }
+  }, [router, status]);
 
   const emailLogin: FormEventHandler<HTMLFormElement> = (event) => {
     enqueueSnackbar("Email authentication is unavailable at the moment.");

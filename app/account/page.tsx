@@ -9,10 +9,21 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
+import { useEffect } from "react";
 
 export default function AccountPage() {
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status !== "authenticated") {
+      router.replace("/login");
+    }
+  }, [router, status]);
+
   const logoutHandler = async () => {
     try {
       await signOut({ callbackUrl: "/" });

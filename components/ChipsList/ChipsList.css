@@ -8,17 +8,14 @@
   flex-direction: row;
   gap: 5px;
   overflow-x: auto;
-  padding: 0 18px 8px;
+  padding: 0 18px 4px;
 }
 
-.chips-list::-webkit-scrollbar {
-  display: none;
+.chips-list::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
-.chips-list:hover {
-  padding-bottom: 5px;
-}
-.chips-list:hover::-webkit-scrollbar {
-  display: initial;
+.chips-list:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .chips-list-wrap .chips-overflow-left {

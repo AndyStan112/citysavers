@@ -8,17 +8,14 @@
   flex-direction: row;
   overflow-x: auto;
   gap: 15px;
-  padding: 0 20px 11px;
+  padding: 0 20px 7px;
 }
 
-.gallery-list::-webkit-scrollbar {
-  display: none;
+.chips-list::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
-.gallery-list:hover {
-  padding-bottom: 8px;
-}
-.gallery-list:hover::-webkit-scrollbar {
-  display: initial;
+.chips-list:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .gallery-image {

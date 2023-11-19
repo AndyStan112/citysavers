@@ -22,7 +22,7 @@ CREATE TABLE "Session" (
     "id" TEXT NOT NULL,
     "sessionToken" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "expires" TIMESTAMP(3) NOT NULL,
+    "expires" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
 );
@@ -35,6 +35,7 @@ CREATE TABLE "User" (
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
     "role" TEXT NOT NULL DEFAULT 'user',
+    "coins" INTEGER NOT NULL DEFAULT 0,
     "phoneNumber" TEXT,
     "firstName" TEXT,
     "lastName" TEXT,
@@ -48,15 +49,16 @@ CREATE TABLE "Issue" (
     "longitude" DOUBLE PRECISION NOT NULL,
     "latitude" DOUBLE PRECISION NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'pending',
-    "statusMessage" TEXT NOT NULL,
+    "statusMessage" TEXT,
+    "category" TEXT NOT NULL,
     "photosUrl" TEXT[],
-    "dateAdded" TIMESTAMP(3) NOT NULL,
+    "dateAdded" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "locationType" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "moreDetails" TEXT,
     "shortDescription" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "issueCategoryId" TEXT NOT NULL,
     "priority" TEXT NOT NULL,
+    "issueCategoryId" TEXT,
 
     CONSTRAINT "Issue_pkey" PRIMARY KEY ("id")
 );
@@ -78,7 +80,7 @@ CREATE TABLE "Solution" (
 CREATE TABLE "Transaction" (
     "id" TEXT NOT NULL,
     "coins" INTEGER NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL,
+    "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "issueId" TEXT,
     "solutionId" TEXT,
 
@@ -100,7 +102,7 @@ CREATE TABLE "IssueCategory" (
 CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
-    "expires" TIMESTAMP(3) NOT NULL
+    "expires" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateIndex
@@ -111,12 +113,6 @@ CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Transaction_id_issueId_key" ON "Transaction"("id", "issueId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Transaction_id_solutionId_key" ON "Transaction"("id", "solutionId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
@@ -134,7 +130,7 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Issue" ADD CONSTRAINT "Issue_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Issue" ADD CONSTRAINT "Issue_issueCategoryId_fkey" FOREIGN KEY ("issueCategoryId") REFERENCES "IssueCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Issue" ADD CONSTRAINT "Issue_issueCategoryId_fkey" FOREIGN KEY ("issueCategoryId") REFERENCES "IssueCategory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Solution" ADD CONSTRAINT "Solution_issueId_fkey" FOREIGN KEY ("issueId") REFERENCES "Issue"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

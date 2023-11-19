@@ -9,7 +9,11 @@ export default function MainNavbar() {
 
   return (
     <AppBar position="fixed" component="nav" sx={{ zIndex: 1300 }}>
-      <Toolbar>
+      <Toolbar
+        sx={{
+          gap: "0.5rem",
+        }}
+      >
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           CitySavers
         </Typography>

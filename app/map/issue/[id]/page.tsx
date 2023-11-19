@@ -6,23 +6,16 @@ import {
   AccessAlarm,
   Add,
   BookmarkBorder,
-  DirectionsBus,
   DoNotDisturbOn,
-  DoNotStep,
   Done,
   Launch,
   Share,
 } from "@mui/icons-material";
-import {
-  Avatar,
-  Button,
-  Chip,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Button, Chip, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
+import { LocationTypesData } from "@/constants/LocationTypes";
+import { IssueTypesData } from "@/constants/IssueTypes";
 
 export default function ViewIssuePage({ params }: { params: { id: string } }) {
   const [issueData, setIssueData] = useState<any>(null);
@@ -45,6 +38,25 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
         });
     }
   }, [issueData, params.id]);
+
+  const shareClickHandler = async () => {
+    if (!issueData) return;
+    const shareUrl = window.location.href;
+    console.log(shareUrl);
+    if (navigator.share) {
+      const shareData = {
+        title: issueData.shortDescription + " - CitySavers",
+        text: issueData.moreDetails,
+        url: shareUrl,
+      };
+      await navigator.share(shareData);
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl);
+      enqueueSnackbar("Link copied to clipboard!");
+    } else {
+      enqueueSnackbar("Failed to share, copy the link manually.");
+    }
+  };
 
   return (
     <OverlayPage>
@@ -83,9 +95,18 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
             ) : (
               <></>
             )}
-            <Chip icon={<DirectionsBus />} label="Bus Station" size="small" />
-            <Chip icon={<DoNotStep />} label="Vandalism" size="small" />
-            <Chip avatar={<Avatar>AU</Avatar>} label="App User" size="small" />
+            <Chip
+              icon={LocationTypesData[issueData.locationType].icon}
+              label={LocationTypesData[issueData.locationType].name}
+              size="small"
+            />
+            <Chip
+              icon={IssueTypesData[issueData.category].icon}
+              label={IssueTypesData[issueData.category].name}
+              size="small"
+            />
+
+            {/* <Chip avatar={<Avatar>AU</Avatar>} label="App User" size="small" /> */}
           </ChipsList>
           <Typography>Images:</Typography>
           <Gallery imageList={issueData.photosUrl} />
@@ -135,7 +156,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
               variant="outlined"
               fullWidth
               startIcon={<Share />}
-              disabled
+              onClick={shareClickHandler}
             >
               Share
             </Button>

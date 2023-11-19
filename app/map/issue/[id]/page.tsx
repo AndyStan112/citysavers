@@ -78,7 +78,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 size="small"
                 color="error"
               />
-            ) : issueData.status == "pending_solution" ? (
+            ) : issueData.status == "approved" ? (
               <Chip
                 icon={<AccessAlarm />}
                 label="Pending solution"

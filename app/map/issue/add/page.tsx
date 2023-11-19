@@ -57,7 +57,7 @@ export default function AddIssuePage() {
       shortDescription: shortDescription,
       moreDetails: moreDetails,
       priority: priority,
-      photos: photoFileList,
+      photosUrl: photoFileList,
     };
 
     setFormDisabled(true);

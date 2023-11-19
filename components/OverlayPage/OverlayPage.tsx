@@ -26,7 +26,7 @@ function OverlayPage({
   const handleClose = () => {
     setIsOpen(false);
     setTimeout(() => {
-      router.back();
+      router.replace("/map");
     }, 350);
   };
 

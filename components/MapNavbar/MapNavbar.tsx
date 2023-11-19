@@ -20,11 +20,6 @@ export default function MapNavbar() {
       target: "/map",
     },
     {
-      label: "Tasks",
-      icon: <TaskAltOutlined />,
-      target: "/map/tasks",
-    },
-    {
       label: "Near Me",
       icon: <LocationOnOutlined />,
       target: "/map/nearme",
@@ -46,7 +41,7 @@ export default function MapNavbar() {
         props.spacer ? (
           <div key={key} className="spacer"></div>
         ) : (
-          <Button key={key}>
+          <Button key={key} onClick={() => router.push(props.target)}>
             {props.icon}
             <span>{props.label}</span>
           </Button>

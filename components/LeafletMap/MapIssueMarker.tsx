@@ -8,13 +8,11 @@ import {
 import { useRouter } from "next/navigation";
 
 export default function IssueMarker({
-  key,
   latitude,
   longitude,
   issueId,
   category,
 }: {
-  key: number;
   latitude: number;
   longitude: number;
   issueId: string;
@@ -30,7 +28,6 @@ export default function IssueMarker({
 
   return (
     <Marker
-      key={key}
       position={[latitude, longitude]}
       icon={
         category == "abandoned-vehicle"

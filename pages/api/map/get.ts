@@ -1,10 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prismadb";
 import { Issue } from "@prisma/client";
-
+type Data = {
+  id: string;
+  latitude: number;
+  longitude: number;
+  category: string;
+};
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<Data[] | { error: string }>
 ) {
   try {
     const pointsArray = await prisma.issue.findMany();
@@ -18,7 +23,7 @@ export default async function handler(
         };
       })
     );
-  } catch (e) {
+  } catch (e: any) {
     res.status(400).json({ error: e });
   }
 }

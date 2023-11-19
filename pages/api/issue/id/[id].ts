@@ -14,7 +14,6 @@ type Data = {
   shortDescription: string;
   userId: string;
   priority: string;
-  issueCategoryId: string | null;
 };
 
 export default async function handler(

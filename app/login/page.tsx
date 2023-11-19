@@ -22,8 +22,13 @@ export default function LoginPage() {
     event.preventDefault();
   };
 
-  const googleLogin = () => {
-    logIn("google");
+  const googleLogin = async () => {
+    try {
+      await signIn("google");
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar("Logging in with Google failed.");
+    }
   };
 
   return (

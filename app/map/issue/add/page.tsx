@@ -44,9 +44,7 @@ export default function AddIssuePage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (status !== "authenticated") {
-      setFormDisabled(true);
-    }
+    setFormDisabled(status !== "authenticated");
   }, [status]);
 
   const submitIssue = () => {
@@ -72,7 +70,7 @@ export default function AddIssuePage() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         enqueueSnackbar("Submission was successful!");
         setFormDisabled(false);
         router.push("/map/issue/" + data.id);

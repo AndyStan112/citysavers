@@ -16,9 +16,11 @@ import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
 import { LocationTypesData } from "@/constants/LocationTypes";
 import { IssueTypesData } from "@/constants/IssueTypes";
+import { useRouter } from "next/navigation";
 
 export default function ViewIssuePage({ params }: { params: { id: string } }) {
   const [issueData, setIssueData] = useState<any>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (!issueData) {
@@ -121,6 +123,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
               variant="contained"
               fullWidth
               startIcon={<Add />}
+              onClick={() => router.push("/map/solution/add/" + params.id)}
             >
               Add solution
             </Button>

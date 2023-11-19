@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
 import Control from "react-leaflet-custom-control";
 import IssueMarker from "./MapIssueMarker";
+import { Stack } from "@mui/material";
 
 type IssuePoint = {
   id: string;
@@ -47,16 +48,18 @@ export default function LeafletMap() {
     <MapContainer
       center={[45.754, 21.226]}
       markerZoomAnimation={true}
-      zoom={16}
+      zoom={15}
       zoomControl={false}
       zoomAnimation={true}
       attributionControl={false}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-      <Control position="bottomleft">
-        <MapAddIssue />
-        <MapGeolocation />
+      <Control position="bottomright">
+        <Stack direction="column" gap={2}>
+          <MapGeolocation />
+          <MapAddIssue />
+        </Stack>
       </Control>
 
       {issuePoints.map((value, index) => (

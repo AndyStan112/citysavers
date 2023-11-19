@@ -10,7 +10,12 @@ export default async function handler(
     const pointsArray = await prisma.issue.findMany();
     res.status(200).json(
       pointsArray.map((el) => {
-        return { id: el.id, latitude: el.latitude, longitude: el.longitude };
+        return {
+          id: el.id,
+          latitude: el.latitude,
+          longitude: el.longitude,
+          category: el.category,
+        };
       })
     );
   } catch (e) {

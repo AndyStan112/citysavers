@@ -1,11 +1,11 @@
 "use client";
 import { AppBar, Button, Toolbar, Typography } from "@mui/material";
-import { AccountCircle, Map } from "@mui/icons-material";
+import { AccountCircle, Map, Code } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function MainNavbar() {
-  const { status } = useSession();
+  const { status, data } = useSession();
 
   return (
     <AppBar position="fixed" component="nav" sx={{ zIndex: 1300 }}>
@@ -17,6 +17,15 @@ export default function MainNavbar() {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           CitySavers
         </Typography>
+        {data?.user.role == "admin" ? (
+          <Link href="/admin">
+            <Button endIcon={<Code />} sx={{ color: "#fff" }}>
+              Admin Panel
+            </Button>
+          </Link>
+        ) : (
+          <></>
+        )}
         <Link href="/map">
           <Button endIcon={<Map />} sx={{ color: "#fff" }}>
             Map

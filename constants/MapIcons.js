@@ -38,10 +38,10 @@ const BlockedRoadIcon = new MapIcon({
   iconRetinaUrl: blockedRoad,
 });
 
-const garbage = "/map-icons/garbage.svg";
-const GarbageIcon = new MapIcon({
-  iconUrl: garbage,
-  iconRetinaUrl: garbage,
+const litter = "/map-icons/garbage.svg";
+const LitterIcon = new MapIcon({
+  iconUrl: litter,
+  iconRetinaUrl: litter,
 });
 
 const vandalism = "/map-icons/vandalism.svg";
@@ -53,7 +53,7 @@ const VandalismIcon = new MapIcon({
 export {
   AbandonedVehicleIcon,
   BlockedRoadIcon,
-  GarbageIcon,
+  LitterIcon,
   PickLocationIcon,
   UserLocationIcon,
   VandalismIcon,

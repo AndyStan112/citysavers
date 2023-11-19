@@ -52,16 +52,14 @@ export default function MapGeolocation() {
 
   return (
     <>
-      <Control prepend position="bottomright">
-        <Fab
-          sx={{ backgroundColor: "white" }}
-          size="medium"
-          aria-label="locate"
-          onClick={locateButtonClick}
-        >
-          <LocationSearching />
-        </Fab>
-      </Control>
+      <Fab
+        sx={{ backgroundColor: "white" }}
+        size="medium"
+        aria-label="locate"
+        onClick={locateButtonClick}
+      >
+        <LocationSearching />
+      </Fab>
 
       {cachedCoords && (
         <Marker icon={UserLocationIcon} position={cachedCoords}>

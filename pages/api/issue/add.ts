@@ -18,7 +18,7 @@ export default async function handler(
       locationType,
       priority,
     } = req.body;
-    await prisma.issue.create({
+    const newIssue = await prisma.issue.create({
       data: {
         userId,
         latitude,
@@ -32,7 +32,9 @@ export default async function handler(
         photosUrl: photosUrl,
       },
     });
-    res.status(200).json({ message: "successfully created issue" });
+    res
+      .status(200)
+      .json({ id: newIssue.id, message: "issue successfully created" });
   } catch (e: any) {
     res.status(400).json({ error: e.message });
   }

@@ -14,7 +14,7 @@ export default async function handler(
       longitude,
       moreDetails,
       shortDescription,
-      photos,
+      photosUrl,
       locationType,
       priority,
     } = req.body;
@@ -29,13 +29,10 @@ export default async function handler(
         shortDescription,
         moreDetails,
         statusMessage: "",
-        photosUrl: [
-          "https://lh3.googleusercontent.com/a/ACg8ocKs_gmz-cHo90Q18-J1iSjm58dJoEiCh2kRBoi3YRD7sPGy=s96-c",
-          "https://lh3.googleusercontent.com/a/ACg8ocKs_gmz-cHo90Q18-J1iSjm58dJoEiCh2kRBoi3YRD7sPGy=s96-c",
-        ],
+        photosUrl: photosUrl,
       },
     });
-    res.status(200).json({ name: "John Doe" });
+    res.status(200).json({ "successfully created issue" });
   } catch (e: any) {
     res.status(400).json({ error: e.message });
   }

@@ -12,22 +12,20 @@ export default function MapAddIssue() {
 
   return (
     <>
-      <Control prepend position="bottomright">
-        <Fab
-          size="medium"
-          aria-label="locate"
-          color="primary"
-          onClick={() => {
-            if (status === "authenticated") {
-              router.push("/map/issue/add");
-            } else {
-              enqueueSnackbar("You must be logged in to add an issue.");
-            }
-          }}
-        >
-          <Add />
-        </Fab>
-      </Control>
+      <Fab
+        size="medium"
+        aria-label="locate"
+        color="primary"
+        onClick={() => {
+          if (status === "authenticated") {
+            router.push("/map/issue/add");
+          } else {
+            enqueueSnackbar("You must be logged in to add an issue.");
+          }
+        }}
+      >
+        <Add />
+      </Fab>
     </>
   );
 }

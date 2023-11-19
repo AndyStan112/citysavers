@@ -5,11 +5,6 @@ import UploadImage from "./UploadImage";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { enqueueSnackbar } from "notistack";
 
-interface UploadedImage {
-  file: File;
-  imageUrl: string;
-}
-
 export default function UploadGallery({
   disabled = false,
   label = "Images",
@@ -24,11 +19,11 @@ export default function UploadGallery({
   onFileListChange?: (fileURLs: string[]) => void;
 }) {
   const inputImageFile = useRef<HTMLInputElement>(null);
-  const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
-  const updateFileList = (imageList: UploadedImage[]) => {
+  const updateFileList = (imageList: string[]) => {
     if (onFileListChange)
-      onFileListChange(imageList.map((image: UploadedImage) => image.imageUrl));
+      onFileListChange(imageList.map((image: string) => image));
   };
 
   const handleAddButtonClick = () => {
@@ -50,15 +45,23 @@ export default function UploadGallery({
           "Maximum number of images " +
             (fileArray.length == 0 ? "exceeded" : "reached")
         );
+        return;
       }
 
-      const newImages: UploadedImage[] = fileArray.map((file) => ({
-        file,
-        imageUrl: URL.createObjectURL(file),
-      }));
-
-      updateFileList([...uploadedImages, ...newImages]);
-      setUploadedImages((prevImages) => [...prevImages, ...newImages]);
+      const newImage = fileArray[fileArray.length - 1];
+      const formdata = new FormData();
+      formdata.append("userpic", newImage, newImage.name);
+      fetch("/api/issue/addimage", {
+        method: "post",
+        body: formdata,
+      })
+        .then((res) => res.json())
+        .then((logo) => {
+          const { photoUrl } = logo;
+          updateFileList([...uploadedImages, photoUrl]);
+          setUploadedImages((prevImages) => [...prevImages, photoUrl]);
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -78,7 +81,7 @@ export default function UploadGallery({
           {uploadedImages.map((image, index) => (
             <UploadImage
               key={index}
-              imageUrl={image.imageUrl}
+              imageUrl={image}
               loading={false}
               tileSize={tileSize}
               onDelete={() => handleDeleteButtonClick(index)}

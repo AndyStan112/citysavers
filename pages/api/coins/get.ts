@@ -8,7 +8,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | { error: string }>
 ) {
-  const id = req.query.id as string;
+  const id = req.body.id as string;
+  if (!id) throw new Error("Invallid id");
+
   try {
     const user = await prisma.user.findUnique({
       where: { id },

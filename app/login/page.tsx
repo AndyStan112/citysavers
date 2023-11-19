@@ -13,9 +13,9 @@ import { enqueueSnackbar } from "notistack";
 import { FormEventHandler } from "react";
 
 export default function LoginPage() {
-  const logIn = (provider: string, email = undefined) => {
-    email ? signIn(provider, {}, email) : signIn(provider, {});
-  };
+  // const logIn = (provider: string, email = undefined) => {
+  //   email ? signIn(provider, {}, email) : signIn(provider, {});
+  // };
 
   const emailLogin: FormEventHandler<HTMLFormElement> = (event) => {
     enqueueSnackbar("Email authentication is unavailable at the moment.");

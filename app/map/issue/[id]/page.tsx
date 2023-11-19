@@ -16,12 +16,10 @@ import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
 import { LocationTypesData } from "@/constants/LocationTypes";
 import { IssueTypesData } from "@/constants/IssueTypes";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ViewIssuePage({ params }: { params: { id: string } }) {
   const [issueData, setIssueData] = useState<any>(null);
-  const router = useRouter();
-
   useEffect(() => {
     if (!issueData) {
       fetch("/api/issue/id/" + params.id)
@@ -80,7 +78,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 size="small"
                 color="error"
               />
-            ) : issueData.status == "pending_solution" ? (
+            ) : issueData.status == "approved" ? (
               <Chip
                 icon={<AccessAlarm />}
                 label="Pending solution"
@@ -118,15 +116,16 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
             {issueData.moreDetails}
           </Typography>
           {issueData.status == "approved" ? (
-            <Button
-              color="primary"
-              variant="contained"
-              fullWidth
-              startIcon={<Add />}
-              onClick={() => router.push("/map/solution/add/" + params.id)}
-            >
-              Add solution
-            </Button>
+            <Link href={`/map/solution/add/${params.id}`}>
+              <Button
+                color="primary"
+                variant="contained"
+                fullWidth
+                startIcon={<Add />}
+              >
+                Add solution
+              </Button>
+            </Link>
           ) : (
             <></>
           )}

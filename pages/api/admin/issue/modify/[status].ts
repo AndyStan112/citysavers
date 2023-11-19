@@ -15,8 +15,8 @@ export default async function handler(
       throw new Error("Status not allowed");
     // const issueId = "clp59ehpm000ehs6b9wzxfhdq";
     // const priority = "medium";
-    // const userId = "clp59dk0d000ahs6b0hgvaoxg";`
-    //const status== approved
+    // const userId = "clp59dk0d000ahs6b0hgvaoxg";
+    //const status = "approved";
     if (!isAdmin(userId)) throw new Error("User not admin");
     // @ts-ignore
     const coins = P_TO_ISSUE[priority];

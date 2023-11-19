@@ -16,8 +16,8 @@ export default async function handler(
       throw new Error("Status not allowed");
     // const issueId = "clp59ehpm000ehs6b9wzxfhdq";
     // const priority = "medium";
-    // const userId = "clp59dk0d000ahs6b0hgvaoxg";`
-    //const status== approved
+    // const userId = "clp59dk0d000ahs6b0hgvaoxg";
+    // const solutionId = "test";
     if (!isAdmin(userId)) throw new Error("User not admin");
     const coins = P_TO_SOLUTION[priority];
     console.log(coins);
@@ -26,13 +26,13 @@ export default async function handler(
       approved: { increment: coins },
     };
     const sign = status === "approved" ? 1 : -1;
-    const solution = await prisma.issue.findUnique({
-      where: { id: issueId },
+    const solution = await prisma.solution.findUnique({
+      where: { id: solutionId },
       select: { userId: true },
     });
 
     if (!solution) {
-      throw new Error(`Issue with ID ${solutionId} not found.`);
+      throw new Error(`Solution with ID ${solutionId} not found.`);
     }
 
     const solverId = solution.userId;
@@ -57,7 +57,7 @@ export default async function handler(
         ...transation,
         prisma.issue.update({
           where: { id: issueId },
-          data: { status },
+          data: { status: "solved" },
         }),
       ];
     await prisma.$transaction(transation);

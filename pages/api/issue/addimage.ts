@@ -29,7 +29,7 @@ export default async function handler(req, res) {
   let files;
   try {
     [fields, files] = await form.parse(req);
-    console.log(files);
+    // console.log(files);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

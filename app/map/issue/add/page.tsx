@@ -215,6 +215,7 @@ export default function AddIssuePage() {
               setPriority(newPriority);
             }}
             size="small"
+            color="primary"
             fullWidth
             disabled={formDisabled}
             aria-label="priority"

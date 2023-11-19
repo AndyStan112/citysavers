@@ -13,7 +13,14 @@ import {
   Launch,
   Share,
 } from "@mui/icons-material";
-import { Avatar, Button, Chip, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Chip,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
 
@@ -25,12 +32,16 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
       fetch("/api/issue/id/" + params.id)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          setIssueData(data);
+          // console.log(data);
+          if (data.error == "Not found") {
+            enqueueSnackbar(`Issue with id: "${params.id}" not found.`);
+          } else {
+            setIssueData(data);
+          }
         })
         .catch((error) => {
           console.log(error);
-          enqueueSnackbar(`Issue with id: ${params.id} not found!`);
+          enqueueSnackbar("An error occurred.");
         });
     }
   }, [issueData, params.id]);
@@ -119,7 +130,27 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
           </Stack>
         </>
       ) : (
-        <Typography>Loading</Typography>
+        <>
+          <Skeleton variant="text" sx={{ fontSize: "1.5rem", mr: "40px" }} />
+          <Stack
+            direction="row"
+            gap={1.5}
+            sx={{ width: "70%", fontSize: "1.1rem" }}
+          >
+            <Skeleton variant="text" sx={{ flex: 1 }} />
+            <Skeleton variant="text" sx={{ flex: 1 }} />
+            <Skeleton variant="text" sx={{ flex: 1 }} />
+          </Stack>
+          <Stack
+            direction="row"
+            gap={1.5}
+            sx={{ width: "130%", fontSize: "1.1rem", mt: "10px" }}
+          >
+            <Skeleton variant="rounded" sx={{ flex: 1 }} height={200} />
+            <Skeleton variant="rounded" sx={{ flex: 1 }} height={200} />
+          </Stack>
+          <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
+        </>
       )}
     </OverlayPage>
   );

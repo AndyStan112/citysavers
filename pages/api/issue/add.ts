@@ -32,7 +32,7 @@ export default async function handler(
         photosUrl: photosUrl,
       },
     });
-    res.status(200).json({ "successfully created issue" });
+    res.status(200).json({ message: "successfully created issue" });
   } catch (e: any) {
     res.status(400).json({ error: e.message });
   }

@@ -1,4 +1,4 @@
-import { Marker } from "react-leaflet";
+import { Marker, useMap } from "react-leaflet";
 import {
   AbandonedVehicleIcon,
   BlockedRoadIcon,
@@ -21,8 +21,10 @@ export default function IssueMarker({
   category: string;
 }) {
   const router = useRouter();
+  const map = useMap();
 
   const markerClickHandler = () => {
+    map.flyTo([latitude, longitude], 16);
     router.push("/map/issue/" + issueId);
   };
 

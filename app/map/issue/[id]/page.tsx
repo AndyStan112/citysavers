@@ -41,25 +41,37 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
         <>
           <Typography variant="h6">{issueData.shortDescription}</Typography>
           <ChipsList>
-            <Chip
-              icon={<AccessAlarm />}
-              label="Pending approval"
-              size="small"
-              color="warning"
-            />
-            <Chip
-              icon={<DoNotDisturbOn />}
-              label="Rejected"
-              size="small"
-              color="error"
-            />
-            <Chip
-              icon={<AccessAlarm />}
-              label="Pending solution"
-              size="small"
-              color="info"
-            />
-            <Chip icon={<Done />} label="Solved" size="small" color="success" />
+            {issueData.status == "pending" ? (
+              <Chip
+                icon={<AccessAlarm />}
+                label="Pending approval"
+                size="small"
+                color="warning"
+              />
+            ) : issueData.status == "rejected" ? (
+              <Chip
+                icon={<DoNotDisturbOn />}
+                label="Rejected"
+                size="small"
+                color="error"
+              />
+            ) : issueData.status == "pending_solution" ? (
+              <Chip
+                icon={<AccessAlarm />}
+                label="Pending solution"
+                size="small"
+                color="info"
+              />
+            ) : issueData.status == "solved" ? (
+              <Chip
+                icon={<Done />}
+                label="Solved"
+                size="small"
+                color="success"
+              />
+            ) : (
+              <></>
+            )}
             <Chip icon={<DirectionsBus />} label="Bus Station" size="small" />
             <Chip icon={<DoNotStep />} label="Vandalism" size="small" />
             <Chip avatar={<Avatar>AU</Avatar>} label="App User" size="small" />

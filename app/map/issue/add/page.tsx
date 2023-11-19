@@ -17,7 +17,10 @@ import {
 } from "@mui/material";
 import { Done, LocationOn } from "@mui/icons-material";
 import { useState, useEffect } from "react";
-import { LocationTypes } from "@/constants/LocationTypes";
+import {
+  LocationTypesData,
+  LocationTypesOrder,
+} from "@/constants/LocationTypes";
 import UploadGallery from "@/components/UploadGallery/UploadGallery";
 import {
   LocationPickerCoords,
@@ -25,7 +28,7 @@ import {
 } from "@/constants/LocationPicker";
 import { useAtom, useAtomValue } from "jotai";
 import "./page.css";
-import { IssueTypes } from "@/constants/IssueTypes";
+import { IssueTypesOrder, IssueTypesData } from "@/constants/IssueTypes";
 import { useSession } from "next-auth/react";
 import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
@@ -146,14 +149,18 @@ export default function AddIssuePage() {
               setLocType(event.target.value as string);
             }}
           >
-            {LocationTypes.map(({ key, name, icon }) => (
-              <MenuItem key={key} value={key}>
-                <Stack gap={0.75} direction="row">
-                  {icon}
-                  {name}
-                </Stack>
-              </MenuItem>
-            ))}
+            {LocationTypesOrder.map((key) => {
+              const { name, icon } = LocationTypesData[key];
+
+              return (
+                <MenuItem key={key} value={key}>
+                  <Stack gap={0.75} direction="row">
+                    {icon}
+                    {name}
+                  </Stack>
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
 
@@ -185,14 +192,18 @@ export default function AddIssuePage() {
               setIssueCategory(event.target.value as string);
             }}
           >
-            {IssueTypes.map(({ key, name, icon }) => (
-              <MenuItem key={key} value={key}>
-                <Stack gap={0.75} direction="row">
-                  {icon}
-                  {name}
-                </Stack>
-              </MenuItem>
-            ))}
+            {IssueTypesOrder.map((key) => {
+              const { name, icon } = IssueTypesData[key];
+
+              return (
+                <MenuItem key={key} value={key}>
+                  <Stack gap={0.75} direction="row">
+                    {icon}
+                    {name}
+                  </Stack>
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
 

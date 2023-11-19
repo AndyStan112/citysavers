@@ -1,8 +1,8 @@
 import "./UploadGallery.css";
 import { Add } from "@mui/icons-material";
-import { Button, Snackbar } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import UploadImage from "./UploadImage";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { enqueueSnackbar } from "notistack";
 
 export default function UploadGallery({
@@ -19,6 +19,7 @@ export default function UploadGallery({
   onFileListChange?: (fileURLs: string[]) => void;
 }) {
   const inputImageFile = useRef<HTMLInputElement>(null);
+  const [waitForUpload, setWaitForUpload] = useState(false);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   const updateFileList = (imageList: string[]) => {
@@ -51,6 +52,7 @@ export default function UploadGallery({
       const newImage = fileArray[fileArray.length - 1];
       const formdata = new FormData();
       formdata.append("userpic", newImage, newImage.name);
+      setWaitForUpload(true);
       fetch("/api/issue/addimage", {
         method: "post",
         body: formdata,
@@ -60,8 +62,13 @@ export default function UploadGallery({
           const { photoUrl } = logo;
           updateFileList([...uploadedImages, photoUrl]);
           setUploadedImages((prevImages) => [...prevImages, photoUrl]);
+          setWaitForUpload(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setWaitForUpload(false);
+          enqueueSnackbar("Failed to upload image(s).");
+          console.log(err);
+        });
     }
   };
 
@@ -90,10 +97,10 @@ export default function UploadGallery({
           <Button
             className="upload-button"
             variant="outlined"
-            disabled={disabled || uploadedImages.length == max}
+            disabled={disabled || waitForUpload || uploadedImages.length == max}
             onClick={handleAddButtonClick}
           >
-            <Add />
+            {waitForUpload ? <CircularProgress size={"20px"} /> : <Add />}
           </Button>
           <input
             type="file"
@@ -101,7 +108,6 @@ export default function UploadGallery({
             ref={inputImageFile}
             onChange={handleFileChange}
             style={{ display: "none" }}
-            multiple
           />
         </div>
       </div>

@@ -24,7 +24,7 @@ export default async function handler(
   try {
     const issue = await prisma.issue.findUnique({ where: { id } });
     if (!issue) throw new Error("Not found");
-    res.status(200).json(issue);
+    res.status(200).json(issue as Data);
   } catch (e: any) {
     res.status(400).json({ error: e.message });
   }

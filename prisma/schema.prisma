@@ -69,12 +69,10 @@ model Issue {
   moreDetails      String?
   shortDescription String
 
-  userId          String
-  priority        String
-  Solution        Solution[]
-  Transaction     Transaction[]
-  IssueCategory   IssueCategory? @relation(fields: [issueCategoryId], references: [id])
-  issueCategoryId String?
+  userId      String
+  priority    String
+  Solution    Solution[]
+  Transaction Transaction[]
 }
 
 model Solution {
@@ -103,15 +101,6 @@ model Transaction {
 
   @@unique([id, issueId])
   @@unique([id, solutionId])
-}
-
-model IssueCategory {
-  id                  String  @id @default(cuid())
-  shortName           String
-  longName            String
-  icon                String
-  isCommunitySolvable Boolean
-  Issue               Issue[]
 }
 
 model VerificationToken {

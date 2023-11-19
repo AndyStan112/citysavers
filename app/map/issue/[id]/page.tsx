@@ -115,14 +115,18 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
             <br />
             {issueData.moreDetails}
           </Typography>
-          <Button
-            color="primary"
-            variant="contained"
-            fullWidth
-            startIcon={<Add />}
-          >
-            Add solution
-          </Button>
+          {issueData.status == "approved" ? (
+            <Button
+              color="primary"
+              variant="contained"
+              fullWidth
+              startIcon={<Add />}
+            >
+              Add solution
+            </Button>
+          ) : (
+            <></>
+          )}
           <Stack direction="row" gap={1}>
             <a
               href={

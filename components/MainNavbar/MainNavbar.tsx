@@ -20,7 +20,7 @@ export default function MainNavbar() {
         {data?.user.role == "admin" ? (
           <Link href="/admin">
             <Button endIcon={<Code />} sx={{ color: "#fff" }}>
-              Admin Panel
+              Admin
             </Button>
           </Link>
         ) : (

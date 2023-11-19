@@ -248,7 +248,6 @@ export default function AddIssuePage() {
           disabled={formDisabled}
           onFileListChange={(files) => {
             setPhotoFileList(files);
-            console.log(files);
           }}
         />
 

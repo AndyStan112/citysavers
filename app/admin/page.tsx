@@ -1,28 +1,26 @@
 "use client";
-import { Logout } from "@mui/icons-material";
+import ChipsList from "@/components/ChipsList/ChipsList";
+import Gallery from "@/components/Gallery/Gallery";
+import { IssueTypesData } from "@/constants/IssueTypes";
+import { LocationTypesData } from "@/constants/LocationTypes";
 import {
-  Avatar,
+  AccessAlarm,
+  BookmarkBorder,
+  DoNotDisturbOn,
+  Done,
+  Launch,
+  Share,
+} from "@mui/icons-material";
+import {
   Box,
   Button,
+  Chip,
   Divider,
   List,
-  ListItem,
-  ListItemAvatar,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
-  MenuItem,
-  MenuList,
   Paper,
   Stack,
-  Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tabs,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -38,16 +36,39 @@ export default function AdminPage() {
   const router = useRouter();
   const [issuesArray, setIssuesArray] = useState([]);
   const [pendingType, setPendingType] = useState("issue");
+  const [currentIssue, setCurrentIssue] = useState<string>("");
+  const [issueData, setIssueData] = useState<any>(null);
+  const [solutionData, setSolutionData] = useState<any>(null);
 
   useEffect(() => {
     fetch("/api/admin/issue/get?type=all")
       .then((res) => res.json())
-      .then((res) => setIssuesArray(res))
+      .then((res) => {
+        console.log(res);
+        setIssuesArray(res);
+      })
       .catch((err) => {
         enqueueSnackbar("Error getting issues");
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    fetch("/api/issue/id/" + currentIssue)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.error == "Not found") {
+          enqueueSnackbar(`Issue with id: "${currentIssue}" not found.`);
+        } else {
+          setIssueData(data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        enqueueSnackbar("An error occurred.");
+      });
+  }, [currentIssue]);
 
   useEffect(() => {
     if (status !== "authenticated") {
@@ -59,6 +80,27 @@ export default function AdminPage() {
       router.replace("/login");
     }
   }, [data?.user.role, router, status]);
+
+  const modifyIssue = (status: string) => {
+    fetch("/api/admin/issue/modify/" + status, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: data?.user.id,
+        issueId: currentIssue,
+        priority: "medium",
+      }),
+    })
+      .then((data) => {
+        enqueueSnackbar("Set succesful!");
+      })
+      .catch((error) => {
+        console.log(error);
+        enqueueSnackbar("Operation failed.");
+      });
+  };
 
   return (
     <Box
@@ -97,9 +139,65 @@ export default function AdminPage() {
             </Stack>
             <Divider />
             <List>
-              <ListItemButton>
-                <ListItemText primary="Issue Short Description" />
-              </ListItemButton>
+              {issuesArray.map((issue, key) => (
+                <ListItemButton
+                  key={key}
+                  onClick={() => setCurrentIssue(issue.id)}
+                >
+                  <ListItemText>
+                    <Stack direction="column">
+                      <Typography>{issue.shortDescription}</Typography>
+                      <Stack
+                        direction="row"
+                        gap={1}
+                        sx={{ overflow: "hidden" }}
+                      >
+                        {issue.status == "pending" ? (
+                          <Chip
+                            icon={<AccessAlarm />}
+                            label="Pending approval"
+                            size="small"
+                            color="warning"
+                          />
+                        ) : issue.status == "rejected" ? (
+                          <Chip
+                            icon={<DoNotDisturbOn />}
+                            label="Rejected"
+                            size="small"
+                            color="error"
+                          />
+                        ) : issue.status == "approved" ? (
+                          <Chip
+                            icon={<AccessAlarm />}
+                            label="Pending solution"
+                            size="small"
+                            color="info"
+                          />
+                        ) : issue.status == "solved" ? (
+                          <Chip
+                            icon={<Done />}
+                            label="Solved"
+                            size="small"
+                            color="success"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        <Chip
+                          icon={LocationTypesData[issue.locationType].icon}
+                          label={LocationTypesData[issue.locationType].name}
+                          size="small"
+                        />
+                        <Chip
+                          icon={IssueTypesData[issue.category].icon}
+                          label={IssueTypesData[issue.category].name}
+                          size="small"
+                        />
+                      </Stack>
+                    </Stack>
+                  </ListItemText>
+                </ListItemButton>
+              ))}
             </List>
           </Stack>
         </Paper>
@@ -126,14 +224,100 @@ export default function AdminPage() {
                   Issue
                 </Typography>
                 <Divider />
-                <Box sx={{ flex: 4, oveflowY: "auto" }}></Box>
+                <Box sx={{ flex: 4, oveflowY: "auto", padding: "10px 18px" }}>
+                  {issueData && (
+                    <>
+                      <Typography variant="h6">
+                        {issueData.shortDescription}
+                      </Typography>
+                      <ChipsList>
+                        {issueData.status == "pending" ? (
+                          <Chip
+                            icon={<AccessAlarm />}
+                            label="Pending approval"
+                            size="small"
+                            color="warning"
+                          />
+                        ) : issueData.status == "rejected" ? (
+                          <Chip
+                            icon={<DoNotDisturbOn />}
+                            label="Rejected"
+                            size="small"
+                            color="error"
+                          />
+                        ) : issueData.status == "approved" ? (
+                          <Chip
+                            icon={<AccessAlarm />}
+                            label="Pending solution"
+                            size="small"
+                            color="info"
+                          />
+                        ) : issueData.status == "solved" ? (
+                          <Chip
+                            icon={<Done />}
+                            label="Solved"
+                            size="small"
+                            color="success"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        <Chip
+                          icon={LocationTypesData[issueData.locationType].icon}
+                          label={LocationTypesData[issueData.locationType].name}
+                          size="small"
+                        />
+                        <Chip
+                          icon={IssueTypesData[issueData.category].icon}
+                          label={IssueTypesData[issueData.category].name}
+                          size="small"
+                        />
+                      </ChipsList>
+                      <Typography>Images:</Typography>
+                      <Gallery imageList={issueData.photosUrl} />
+                      <Typography>
+                        <strong>More details:</strong>
+                        <br />
+                        {issueData.moreDetails}
+                      </Typography>
+                      <Stack direction="row" gap={1}>
+                        <a
+                          href={
+                            "https://maps.google.com/maps?z=12&t=m&q=loc:" +
+                            issueData.latitude +
+                            "+" +
+                            issueData.longitude
+                          }
+                          target="_blank"
+                        >
+                          <Button
+                            color="success"
+                            variant="outlined"
+                            fullWidth
+                            startIcon={<Launch />}
+                          >
+                            GMaps
+                          </Button>
+                        </a>
+                      </Stack>
+                    </>
+                  )}
+                </Box>
                 <Divider />
                 <Stack direction="row" sx={{ height: "38px" }}>
-                  <Button fullWidth color="success">
+                  <Button
+                    fullWidth
+                    color="success"
+                    onClick={() => modifyIssue("approved")}
+                  >
                     Approve
                   </Button>
                   <Divider orientation="vertical" />
-                  <Button fullWidth color="error">
+                  <Button
+                    fullWidth
+                    color="error"
+                    onClick={() => modifyIssue("rejected")}
+                  >
                     Reject
                   </Button>
                 </Stack>
@@ -155,7 +339,83 @@ export default function AdminPage() {
                   Solution
                 </Typography>
                 <Divider />
-                <Box sx={{ flex: 4, oveflowY: "auto" }}></Box>
+                <Box sx={{ flex: 4, oveflowY: "auto", padding: "10px 18px" }}>
+                  {solutionData && (
+                    <>
+                      <Typography variant="h6">
+                        {solutionData.shortDescription}
+                      </Typography>
+                      <ChipsList>
+                        {solutionData.status == "pending" ? (
+                          <Chip
+                            icon={<AccessAlarm />}
+                            label="Pending approval"
+                            size="small"
+                            color="warning"
+                          />
+                        ) : solutionData.status == "rejected" ? (
+                          <Chip
+                            icon={<DoNotDisturbOn />}
+                            label="Rejected"
+                            size="small"
+                            color="error"
+                          />
+                        ) : solutionData.status == "pending_solution" ? (
+                          <Chip
+                            icon={<AccessAlarm />}
+                            label="Pending solution"
+                            size="small"
+                            color="info"
+                          />
+                        ) : solutionData.status == "solved" ? (
+                          <Chip
+                            icon={<Done />}
+                            label="Solved"
+                            size="small"
+                            color="success"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                      </ChipsList>
+                      <Typography>Images:</Typography>
+                      <Gallery imageList={solutionData.photosUrl} />
+                      <Typography>
+                        <strong>More details:</strong>
+                        <br />
+                        {solutionData.moreDetails}
+                      </Typography>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        fullWidth
+                        startIcon={<Launch />}
+                      >
+                        View issue
+                      </Button>
+                      <Stack direction="row" gap={1}>
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          fullWidth
+                          startIcon={<BookmarkBorder />}
+                          disabled
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          color="secondary"
+                          variant="outlined"
+                          fullWidth
+                          startIcon={<Share />}
+                          disabled
+                        >
+                          Share
+                        </Button>
+                      </Stack>
+                    </>
+                  )}
+                </Box>
                 <Divider />
                 <Stack direction="row" sx={{ height: "38px" }}>
                   <Button fullWidth color="success">

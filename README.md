@@ -1,8 +1,8 @@
 # CitySavers
 
-Platform for citizens to report problems in their cities and for volunteers to fix them.
+Platform for citizens to report problems in their cities and for volunteers to fix them. Done over the course of 48 hours for the Unihack hackaton.
 
-# Tracks
+# Tracks competing for:
 -Green City
 -Best Typescript Web App
 -React

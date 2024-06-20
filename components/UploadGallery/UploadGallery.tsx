@@ -58,8 +58,11 @@ export default function UploadGallery({
         body: formdata,
       })
         .then((res) => res.json())
-        .then((logo) => {
-          const { photoUrl } = logo;
+        .then((json) => {
+          if (!json.includes("photoUrl")) {
+            throw new Error("Did not get an image URL.");
+          }
+          const { photoUrl } = json;
           updateFileList([...uploadedImages, photoUrl]);
           setUploadedImages((prevImages) => [...prevImages, photoUrl]);
           setWaitForUpload(false);

@@ -11,7 +11,7 @@ import { MailOutline, Google } from "@mui/icons-material";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
-import { FormEventHandler, useEffect } from "react";
+import { FormEventHandler, useEffect, useRef } from "react";
 
 export default function LoginPage() {
   // const logIn = (provider: string, email = undefined) => {
@@ -20,16 +20,24 @@ export default function LoginPage() {
 
   const { status } = useSession();
   const router = useRouter();
-
+  const emailInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (status === "authenticated") {
       router.replace("/account");
     }
   }, [router, status]);
 
-  const emailLogin: FormEventHandler<HTMLFormElement> = (event) => {
-    enqueueSnackbar("Email authentication is unavailable at the moment.");
+  const emailLogin: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
+    const email = emailInputRef.current?.value || "";
+    console.log(email);
+    console.log("muuie");
+    try {
+      await signIn("email", { email });
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar("Logging in with Email failed.");
+    }
   };
 
   const googleLogin = async () => {
@@ -77,6 +85,7 @@ export default function LoginPage() {
           id="login-email"
           type="email"
           label="Email Address"
+          inputRef={emailInputRef}
           required
         />
         <Button startIcon={<MailOutline />} variant="outlined" type="submit">

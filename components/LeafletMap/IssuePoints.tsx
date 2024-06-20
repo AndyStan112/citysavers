@@ -16,7 +16,7 @@ export default function IssuePoints() {
     await fetch("/api/map/get")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setIssuePoints(data);
       })
       .catch((error) => {

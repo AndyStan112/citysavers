@@ -17,6 +17,7 @@ import { enqueueSnackbar } from "notistack";
 import { LocationTypesData } from "@/constants/LocationTypes";
 import { IssueTypesData } from "@/constants/IssueTypes";
 import Link from "next/link";
+import StatusChip from "@/components/StatusChip/StatusChip";
 
 export default function ViewIssuePage({ params }: { params: { id: string } }) {
   const [issueData, setIssueData] = useState<any>(null);
@@ -64,37 +65,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
         <>
           <Typography variant="h6">{issueData.shortDescription}</Typography>
           <ChipsList>
-            {issueData.status == "pending" ? (
-              <Chip
-                icon={<AccessAlarm />}
-                label="Pending approval"
-                size="small"
-                color="warning"
-              />
-            ) : issueData.status == "rejected" ? (
-              <Chip
-                icon={<DoNotDisturbOn />}
-                label="Rejected"
-                size="small"
-                color="error"
-              />
-            ) : issueData.status == "approved" ? (
-              <Chip
-                icon={<AccessAlarm />}
-                label="Pending solution"
-                size="small"
-                color="info"
-              />
-            ) : issueData.status == "solved" ? (
-              <Chip
-                icon={<Done />}
-                label="Solved"
-                size="small"
-                color="success"
-              />
-            ) : (
-              <></>
-            )}
+            <StatusChip status={issueData.status} />
             <Chip
               icon={LocationTypesData[issueData.locationType].icon}
               label={LocationTypesData[issueData.locationType].name}
@@ -108,13 +79,8 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
 
             {/* <Chip avatar={<Avatar>AU</Avatar>} label="App User" size="small" /> */}
           </ChipsList>
-          <Typography>Images:</Typography>
           <Gallery imageList={issueData.photosUrl} />
-          <Typography>
-            <strong>More details:</strong>
-            <br />
-            {issueData.moreDetails}
-          </Typography>
+          <Typography>{issueData.moreDetails}</Typography>
           {issueData.status == "approved" ? (
             <Link href={`/map/solution/add/${params.id}`}>
               <Button

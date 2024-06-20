@@ -69,9 +69,9 @@ model Issue {
   locationType     String
   moreDetails      String?
   shortDescription String
+  priority         String
 
   userId      String
-  priority    String
   Solution    Solution[]
   Transaction Transaction[]
 }

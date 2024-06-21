@@ -49,7 +49,9 @@ export default function AccountPage() {
             <Typography variant="h5">
               {data.user.name ? data.user.name : "Unknown"}
             </Typography>
-            <Typography>0 coins</Typography>
+            <Typography>
+              {data.user.coins} coins | {data.user.points} points
+            </Typography>
           </Stack>
           <Divider component="hr" />
           <MenuList>

@@ -1,4 +1,7 @@
 "use client";
+import CategoryChip from "@/components/Chips/CategoryChip";
+import LocationTypeChip from "@/components/Chips/LocationTypeChip";
+import StatusChip from "@/components/Chips/StatusChip";
 import ChipsList from "@/components/ChipsList/ChipsList";
 import Gallery from "@/components/Gallery/Gallery";
 import { IssueData } from "@/components/IssueListItem/IssueData";
@@ -74,11 +77,11 @@ export default function AdminPage() {
   }, [currentIssue]);
 
   useEffect(() => {
-    if (status !== "authenticated") {
+    if (status === "unauthenticated") {
       enqueueSnackbar("You are not logged in");
       router.replace("/login");
     }
-    if (data?.user.role != "admin") {
+    if (status === "authenticated" && data?.user.role != "admin") {
       enqueueSnackbar("You do not have privileges");
       router.replace("/login");
     }
@@ -119,7 +122,7 @@ export default function AdminPage() {
         gap={3}
         sx={{ width: "100%", alignItems: "stretch" }}
       >
-        <Paper sx={{ flex: 1 }} elevation={3}>
+        <Paper sx={{ flex: 1, overflow: "auto" }} elevation={3}>
           <Stack>
             <Stack direction="row">
               <Typography sx={{ p: "8px 16px" }}>Pending</Typography>
@@ -182,47 +185,9 @@ export default function AdminPage() {
                         {issueData.shortDescription}
                       </Typography>
                       <ChipsList>
-                        {issueData.status == "pending" ? (
-                          <Chip
-                            icon={<AccessAlarm />}
-                            label="Pending approval"
-                            size="small"
-                            color="warning"
-                          />
-                        ) : issueData.status == "rejected" ? (
-                          <Chip
-                            icon={<DoNotDisturbOn />}
-                            label="Rejected"
-                            size="small"
-                            color="error"
-                          />
-                        ) : issueData.status == "approved" ? (
-                          <Chip
-                            icon={<AccessAlarm />}
-                            label="Pending solution"
-                            size="small"
-                            color="info"
-                          />
-                        ) : issueData.status == "solved" ? (
-                          <Chip
-                            icon={<Done />}
-                            label="Solved"
-                            size="small"
-                            color="success"
-                          />
-                        ) : (
-                          <></>
-                        )}
-                        <Chip
-                          icon={LocationTypesData[issueData.locationType].icon}
-                          label={LocationTypesData[issueData.locationType].name}
-                          size="small"
-                        />
-                        <Chip
-                          icon={IssueTypesData[issueData.category].icon}
-                          label={IssueTypesData[issueData.category].name}
-                          size="small"
-                        />
+                        <StatusChip status={issueData.status} />
+                        <LocationTypeChip type={issueData.locationType} />
+                        <CategoryChip category={issueData.category} />
                       </ChipsList>
                       <Typography>Images:</Typography>
                       <Gallery imageList={issueData.photosUrl} />

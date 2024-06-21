@@ -3,13 +3,16 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prismadb";
 import { isAdmin } from "@/lib/util";
 import { P_TO_ISSUE, Priority, StatusMod } from "@/constants/DbConstants";
+import { getToken } from "next-auth/jwt";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const { userId, issueId, priority } = req.body;
+    const session = await getToken({ req });
+    const userId = session?.sub;
+    const { issueId, priority } = req.body;
     const status = req.query.status as string;
     if (!["rejected", "approved", "wip"].includes(status))
       throw new Error("Status not allowed");

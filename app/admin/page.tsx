@@ -55,20 +55,22 @@ export default function AdminPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/issue/id/" + currentIssue)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.error == "Not found") {
-          enqueueSnackbar(`Issue with id: "${currentIssue}" not found.`);
-        } else {
-          setIssueData(data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        enqueueSnackbar("An error occurred.");
-      });
+    if (currentIssue.length > 0) {
+      fetch("/api/issue/id/" + currentIssue)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.error == "Not found") {
+            enqueueSnackbar(`Issue with id: "${currentIssue}" not found.`);
+          } else {
+            setIssueData(data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          enqueueSnackbar("An error occurred.");
+        });
+    }
   }, [currentIssue]);
 
   useEffect(() => {

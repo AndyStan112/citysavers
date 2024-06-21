@@ -68,8 +68,8 @@ model Issue {
   moreDetails      String?
   shortDescription String
   priority         String
-  isIssue          Boolean
-  description      String
+  isIssue          Boolean?
+  description      String?
   county           String    @default("none")
 
   userId      String

@@ -11,12 +11,8 @@ export default async function handler(
   try {
     const { userId, issueId, priority } = req.body;
     const status = req.query.status as string;
-    if (!["rejected", "approved"].includes(status))
+    if (!["rejected", "approved", "wip"].includes(status))
       throw new Error("Status not allowed");
-    // const issueId = "clp59ehpm000ehs6b9wzxfhdq";
-    // const priority = "medium";
-    // const userId = "clp59dk0d000ahs6b0hgvaoxg";
-    //const status = "approved";
     if (!isAdmin(userId)) throw new Error("User not admin");
     const coins = P_TO_ISSUE[priority as Priority];
     console.log(coins);
@@ -24,7 +20,7 @@ export default async function handler(
       rejected: { decrement: coins },
       approved: { increment: coins },
     };
-    const sign = status === "approved" ? 1 : -1;
+    const sign = status in ["approved", "wip"] ? 1 : -1;
     const issue = await prisma.issue.findUnique({
       where: { id: issueId },
       include: { reportedBy: true },
@@ -51,7 +47,7 @@ export default async function handler(
         },
       }),
     ]);
-    res.status(200).json({ name: "John Doe" });
+    res.status(200).json({});
   } catch (e: any) {
     res.status(400).json({ error: e.message });
   }

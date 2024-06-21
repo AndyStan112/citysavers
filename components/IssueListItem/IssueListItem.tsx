@@ -1,13 +1,7 @@
 import { ListItemButton, ListItemText, Stack, Typography } from "@mui/material";
 import StatusChip from "../Chips/StatusChip";
 import CategoryChip from "../Chips/CategoryChip";
-
-type IssueData = {
-  id: string;
-  status: string;
-  category: string;
-  shortDescription: string;
-};
+import { IssueData } from "./IssueData";
 
 export default function IssueListItem({ data }: { data: IssueData }) {
   return (

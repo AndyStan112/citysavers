@@ -44,7 +44,7 @@ export default function ViewSolutionPage({
     <OverlayPage>
       {solutionData ? (
         <>
-          <Typography variant="h6">{solutionData.shortDescription}</Typography>
+          <Typography variant="h6">{solutionData.description}</Typography>
           <ChipsList>
             {solutionData.status == "pending" ? (
               <Chip
@@ -78,13 +78,8 @@ export default function ViewSolutionPage({
               <></>
             )}
           </ChipsList>
-          <Typography>Images:</Typography>
           <Gallery imageList={solutionData.photosUrl} />
-          <Typography>
-            <strong>More details:</strong>
-            <br />
-            {solutionData.moreDetails}
-          </Typography>
+          <Typography>{solutionData.moreDetails}</Typography>
           <Button
             color="primary"
             variant="contained"

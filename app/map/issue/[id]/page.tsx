@@ -2,7 +2,13 @@
 import ChipsList from "@/components/ChipsList/ChipsList";
 import Gallery from "@/components/Gallery/Gallery";
 import OverlayPage from "@/components/OverlayPage/OverlayPage";
-import { Add, BookmarkBorder, Launch, Share } from "@mui/icons-material";
+import {
+  Add,
+  BookmarkBorder,
+  BookmarkRemoveOutlined,
+  Launch,
+  Share,
+} from "@mui/icons-material";
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
@@ -60,7 +66,6 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
             <StatusChip status={issueData.status} />
             <CategoryChip category={issueData.category} />
             <LocationTypeChip type={issueData.locationType} />
-            {/* <Chip avatar={<Avatar>AU</Avatar>} label="App User" size="small" /> */}
           </ChipsList>
           <Gallery imageList={issueData.photosUrl} />
           <Typography>{issueData.moreDetails}</Typography>
@@ -97,15 +102,25 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 GMaps
               </Button>
             </a>
-            <Button
-              color="primary"
-              variant="outlined"
-              fullWidth
-              startIcon={<BookmarkBorder />}
-              disabled
-            >
-              Save
-            </Button>
+            {issueData.isSaved ? (
+              <Button
+                color="primary"
+                variant="outlined"
+                fullWidth
+                startIcon={<BookmarkRemoveOutlined />}
+              >
+                Saved
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                variant="outlined"
+                fullWidth
+                startIcon={<BookmarkBorder />}
+              >
+                Save
+              </Button>
+            )}
             <Button
               color="secondary"
               variant="outlined"

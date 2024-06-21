@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prismadb";
+import { getToken } from "next-auth/jwt";
 type Data = {
   points: number;
   coins: number;
@@ -9,7 +10,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | { error: string }>
 ) {
-  const id = req.body.id as string;
+  const session = await getToken({ req });
+  const id = session?.sub;
   if (!id) throw new Error("Invallid id");
 
   try {

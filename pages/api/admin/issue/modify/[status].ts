@@ -23,7 +23,7 @@ export default async function handler(
       rejected: { decrement: coins },
       approved: { increment: coins },
     };
-    const sign = status in ["approved", "wip"] ? 1 : -1;
+    const sign = ["approved", "wip"].includes(status) ? 1 : -1;
     const issue = await prisma.issue.findUnique({
       where: { id: issueId },
       include: { reportedBy: true },
@@ -55,6 +55,7 @@ export default async function handler(
     ]);
     res.status(200).json({});
   } catch (e: any) {
+    console.log(e);
     res.status(400).json({ error: e.message });
   }
 }

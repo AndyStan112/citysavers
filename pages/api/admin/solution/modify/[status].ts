@@ -2,12 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prismadb";
 import { isAdmin } from "@/lib/util";
-import {
-  P_TO_ISSUE,
-  P_TO_SOLUTION,
-  Priority,
-  StatusMod,
-} from "@/constants/DbConstants";
+import { P_TO_SOLUTION, Priority, StatusMod } from "@/constants/DbConstants";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,10 +13,6 @@ export default async function handler(
     const status = req.query.status as string;
     if (!["rejected", "approved"].includes(status))
       throw new Error("Status not allowed");
-    // const issueId = "clp59ehpm000ehs6b9wzxfhdq";
-    // const priority = "medium";
-    // const userId = "clp59dk0d000ahs6b0hgvaoxg";
-    // const solutionId = "test";
     if (!isAdmin(userId)) throw new Error("User not admin");
     const coins = P_TO_SOLUTION[priority as Priority];
     console.log(coins);

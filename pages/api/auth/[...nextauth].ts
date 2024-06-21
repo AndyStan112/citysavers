@@ -7,7 +7,6 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../lib/prismadb";
 import { User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
-import Google from "next-auth/providers/google";
 const handleLink = async (
   user: User | AdapterUser,
   profile: User | AdapterUser,
@@ -28,7 +27,11 @@ export default NextAuth({
   adapter: PrismaAdapter(prisma),
   callbacks: {
     async jwt({ token, user }) {
-      return { ...token, ...user };
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
     },
     async session({ session, token }) {
       session.user.role = token.role as string;

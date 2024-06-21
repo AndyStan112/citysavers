@@ -7,12 +7,15 @@ import { Marker, Popup, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
 import { LatLngExpression } from "leaflet";
 import { UserLocationIcon } from "@/constants/MapIcons";
+import { useSetAtom } from "jotai";
+import { MyLocationCoords } from "@/constants/MapGeolocation";
 
 export default function MapGeolocation() {
   const map = useMap();
   const [waitingState, setWaitingState] = useState(false);
   const [initialState, setInitialState] = useState(true);
   const [cachedCoords, setCachedCoords] = useState<LatLngExpression>();
+  const setMyLocation = useSetAtom(MyLocationCoords);
 
   const { coords, getPosition } = useGeolocated({
     positionOptions: {
@@ -25,8 +28,9 @@ export default function MapGeolocation() {
   useEffect(() => {
     if (coords) {
       setCachedCoords(L.latLng(coords.latitude, coords.longitude));
+      setMyLocation(L.latLng(coords.latitude, coords.longitude));
     }
-  }, [coords, setCachedCoords]);
+  }, [coords, setCachedCoords, setMyLocation]);
 
   useEffect(() => {
     if (waitingState && coords) {

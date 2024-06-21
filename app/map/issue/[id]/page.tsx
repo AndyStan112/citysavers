@@ -2,22 +2,14 @@
 import ChipsList from "@/components/ChipsList/ChipsList";
 import Gallery from "@/components/Gallery/Gallery";
 import OverlayPage from "@/components/OverlayPage/OverlayPage";
-import {
-  AccessAlarm,
-  Add,
-  BookmarkBorder,
-  DoNotDisturbOn,
-  Done,
-  Launch,
-  Share,
-} from "@mui/icons-material";
-import { Button, Chip, Skeleton, Stack, Typography } from "@mui/material";
+import { Add, BookmarkBorder, Launch, Share } from "@mui/icons-material";
+import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
-import { LocationTypesData } from "@/constants/LocationTypes";
-import { IssueTypesData } from "@/constants/IssueTypes";
 import Link from "next/link";
-import StatusChip from "@/components/StatusChip/StatusChip";
+import StatusChip from "@/components/Chips/StatusChip";
+import CategoryChip from "@/components/Chips/CategoryChip";
+import LocationTypeChip from "@/components/Chips/LocationTypeChip";
 
 export default function ViewIssuePage({ params }: { params: { id: string } }) {
   const [issueData, setIssueData] = useState<any>(null);
@@ -66,17 +58,8 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
           <Typography variant="h6">{issueData.shortDescription}</Typography>
           <ChipsList>
             <StatusChip status={issueData.status} />
-            <Chip
-              icon={LocationTypesData[issueData.locationType].icon}
-              label={LocationTypesData[issueData.locationType].name}
-              size="small"
-            />
-            <Chip
-              icon={IssueTypesData[issueData.category].icon}
-              label={IssueTypesData[issueData.category].name}
-              size="small"
-            />
-
+            <CategoryChip category={issueData.category} />
+            <LocationTypeChip type={issueData.locationType} />
             {/* <Chip avatar={<Avatar>AU</Avatar>} label="App User" size="small" /> */}
           </ChipsList>
           <Gallery imageList={issueData.photosUrl} />

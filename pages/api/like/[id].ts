@@ -11,9 +11,9 @@ export default async function handler(
   const id = req.query.id as string;
 
   try {
-    let savedCount = 0;
+    let likedCount = 0;
     if (session) {
-      savedCount = await prisma.savedIssue.count({
+      likedCount = await prisma.savedIssue.count({
         where: {
           userId: session.id as string,
           issueId: id,
@@ -21,13 +21,15 @@ export default async function handler(
       });
     }
 
-    if (savedCount === 0) throw new Error("already saved");
+    if (likedCount === 0) throw new Error("already liked");
+    const transaction = [
+      prisma.likedIssue.create({
+        data: { issueId: id, userId: session?.id as string },
+      }),
+      prisma.issue.update({ where: { id }, data: { likes: { increment: 1 } } }),
+    ];
+    await prisma.$transaction(transaction);
 
-    const issue = await prisma.savedIssue.create({
-      data: { issueId: id, userId: session?.id as string },
-    });
-
-    if (!issue) throw new Error("Issue not found");
     res.status(200).json({});
   } catch (e: any) {
     res.status(400).json({ error: e.message });

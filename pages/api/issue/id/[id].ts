@@ -23,16 +23,20 @@ export default async function handler(
   res: NextApiResponse<Data | { error: string }>
 ) {
   const session = await getToken({ req });
-  if (!session) throw new Error("Session null");
+  // if (!session) throw new Error("Session null");
   const id = req.query.id as string;
+
   try {
     const issue = await prisma.issue.findUnique({ where: { id } });
-    const savedCount = await prisma.savedIssue.count({
-      where: {
-        userId: session.id as string,
-        issueId: id,
-      },
-    });
+    let savedCount = 0;
+    if (session) {
+      savedCount = await prisma.savedIssue.count({
+        where: {
+          userId: session.id as string,
+          issueId: id,
+        },
+      });
+    }
 
     if (!issue) throw new Error("Issue not found");
     res.status(200).json({ ...issue, isSaved: savedCount === 1 } as Data);

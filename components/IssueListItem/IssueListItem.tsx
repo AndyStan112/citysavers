@@ -4,15 +4,21 @@ import CategoryChip from "../Chips/CategoryChip";
 import { IssueData } from "./IssueData";
 import { useRouter } from "next/navigation";
 
-export default function IssueListItem({ data }: { data: IssueData }) {
+export default function IssueListItem({
+  data,
+  clickHandler,
+}: {
+  data: IssueData;
+  clickHandler?: any;
+}) {
   const router = useRouter();
 
+  const defaultHandler = () => {
+    router.push(`/map/issue/${data.id}`);
+  };
+
   return (
-    <ListItemButton
-      onClick={() => {
-        router.push(`/map/issue/${data.id}`);
-      }}
-    >
+    <ListItemButton onClick={clickHandler ? clickHandler : defaultHandler}>
       <ListItemText>
         <Stack gap={0.5}>
           <Typography>{data.shortDescription}</Typography>

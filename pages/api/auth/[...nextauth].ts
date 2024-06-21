@@ -30,12 +30,16 @@ export default NextAuth({
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.coins = user.coins;
+        token.points = user.points;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.role = token.role as string;
       session.user.id = token.sub as string;
+      session.user.coins = token.coins as string;
+      session.user.points = token.points as string;
       return session;
     },
     redirect({ url }) {

@@ -143,7 +143,9 @@ export default function NearMePage() {
             ))
           ) : (
             <>
-              <Typography>No issues found in the selected radius.</Typography>
+              <Typography align="center" padding="10px 0">
+                No issues found in the selected radius.
+              </Typography>
             </>
           )
         ) : (

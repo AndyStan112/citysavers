@@ -102,7 +102,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 GMaps
               </Button>
             </a>
-            {true ? (
+            {issueData.isSaved ? (
               <Button
                 color="primary"
                 variant="outlined"

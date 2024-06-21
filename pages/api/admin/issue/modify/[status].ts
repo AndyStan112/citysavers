@@ -48,6 +48,7 @@ export default async function handler(
       }),
       prisma.transaction.create({
         data: {
+          userId,
           coins: coins * sign,
         },
       }),

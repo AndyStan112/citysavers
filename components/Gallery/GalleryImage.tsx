@@ -5,11 +5,9 @@ import { IconButton, Modal } from "@mui/material";
 import { useState } from "react";
 
 export default function GalleryImage({
-  key,
   image = "",
   tileHeight = 100,
 }: {
-  key?: any;
   image?: string;
   tileHeight?: number;
 }) {
@@ -34,12 +32,7 @@ export default function GalleryImage({
           </div>
         </>
       </Modal>
-      <div
-        key={key}
-        tabIndex={0}
-        className="gallery-image"
-        onClick={() => setOpen(true)}
-      >
+      <div tabIndex={0} className="gallery-image" onClick={() => setOpen(true)}>
         <img
           className="gallery-image-object"
           src={image}

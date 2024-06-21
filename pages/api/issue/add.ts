@@ -26,7 +26,7 @@ export default async function handler(
       ? photosUrl.map((url: string) => ({
           type: "image_url",
           image_url: {
-            url: "https://i.natgeofe.com/n/384273f9-b171-4a7f-be52-1b855a7760f1/01_trash_gettyimages-1086344474_3x4.jpg",
+            url,
           },
         }))
       : [];
@@ -40,6 +40,7 @@ export default async function handler(
         ...imagesContent,
       ],
     };
+    console.log(prompt);
     let judgement = { isIssue: null, description: null };
     if (process.env.OPENAI_API_KEY) {
       const response = await axios.post(
@@ -79,11 +80,11 @@ export default async function handler(
       ...judgement,
       county,
     };
-    console.log(issueData);
+
     let newIssue = await prisma.issue.create({
       data: issueData,
     });
-    console.log(newIssue);
+
     res
       .status(200)
       .json({ id: newIssue.id, message: "issue successfully created" });

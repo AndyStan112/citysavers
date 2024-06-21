@@ -21,9 +21,35 @@ export default async function handler(
       priority,
     } = req.body;
 
+    const imagesContent = photosUrl
+      ? photosUrl.map((url: string) => ({
+          type: "image_url",
+          image_url: {
+            url: "https://i.natgeofe.com/n/384273f9-b171-4a7f-be52-1b855a7760f1/01_trash_gettyimages-1086344474_3x4.jpg",
+          },
+        }))
+      : [];
+    const prompt = {
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(req.body),
+        },
+        ...imagesContent,
+      ],
+    };
+
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
-      issueReviewContext,
+      {
+        model: "gpt-4o",
+        messages: [...issueReviewContext, prompt],
+        max_tokens: 256,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      },
       {
         headers: {
           "content-Type": "application/json",
@@ -31,12 +57,12 @@ export default async function handler(
         },
       }
     );
-    let judgement = JSON.parse(response.data.choices[0].content);
+    console.log(response.data.choices);
+    const responseContent = response.data.choices[0].message.content;
+    const judgement = responseContent
+      ? JSON.parse(responseContent)
+      : { isIssue: null, description: null };
     console.log(judgement);
-    if (!judgement || !judgement.isSaved || !judgement.description) {
-      console.log("Invalid ai judgement");
-      judgement = { isIssue: null, description: null };
-    }
 
     let newIssue = await prisma.issue.create({
       data: {

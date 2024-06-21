@@ -59,7 +59,7 @@ export default function UploadGallery({
       })
         .then((res) => res.json())
         .then((json) => {
-          if (!json.includes("photoUrl")) {
+          if (json.photoUrl == undefined) {
             throw new Error("Did not get an image URL.");
           }
           const { photoUrl } = json;

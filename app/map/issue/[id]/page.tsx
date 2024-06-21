@@ -19,6 +19,8 @@ import LocationTypeChip from "@/components/Chips/LocationTypeChip";
 
 export default function ViewIssuePage({ params }: { params: { id: string } }) {
   const [issueData, setIssueData] = useState<any>(null);
+  const [isSaved, setIsSaved] = useState(false);
+
   useEffect(() => {
     if (!issueData) {
       fetch("/api/issue/id/" + params.id)
@@ -29,6 +31,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
             enqueueSnackbar(`Issue with id: "${params.id}" not found.`);
           } else {
             setIssueData(data);
+            setIsSaved(data.isSaved);
           }
         })
         .catch((error) => {
@@ -55,6 +58,20 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
     } else {
       enqueueSnackbar("Failed to share, copy the link manually.");
     }
+  };
+
+  const saveClickHandler = async () => {
+    if (!issueData) return;
+
+    fetch(`/api/save/${params.id}`)
+      .then((res) => res.json)
+      .then((res) => {
+        setIsSaved(true);
+      })
+      .catch((reason) => {
+        console.log(reason);
+        enqueueSnackbar("Failed to save.");
+      });
   };
 
   return (
@@ -102,7 +119,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 GMaps
               </Button>
             </a>
-            {issueData.isSaved ? (
+            {isSaved ? (
               <Button
                 color="primary"
                 variant="outlined"
@@ -117,6 +134,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 variant="outlined"
                 fullWidth
                 startIcon={<BookmarkBorder />}
+                onClick={saveClickHandler}
               >
                 Save
               </Button>

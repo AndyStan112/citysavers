@@ -70,6 +70,7 @@ model Issue {
   priority         String
   isIssue          Boolean
   description      String
+  county           String    @default("none")
 
   userId      String
   Solution    Solution[]

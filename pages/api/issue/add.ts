@@ -3,6 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prismadb";
 import { issueReviewContext } from "@/constants/openai";
 import axios from "axios";
+import { error } from "console";
+import findCounty from "@/lib/county";
 
 export default async function handler(
   req: NextApiRequest,
@@ -57,29 +59,29 @@ export default async function handler(
         },
       }
     );
-    console.log(response.data.choices);
     const responseContent = response.data.choices[0].message.content;
     const judgement = responseContent
       ? JSON.parse(responseContent)
       : { isIssue: null, description: null };
     console.log(judgement);
-
+    const county = findCounty([longitude, latitude]);
+    const issueData = {
+      userId,
+      latitude,
+      longitude,
+      locationType,
+      category,
+      priority,
+      shortDescription,
+      moreDetails,
+      statusMessage: "",
+      photosUrl,
+      ...judgement,
+      county,
+    };
     let newIssue = await prisma.issue.create({
-      data: {
-        userId,
-        latitude,
-        longitude,
-        locationType,
-        category,
-        priority,
-        shortDescription,
-        moreDetails,
-        statusMessage: "",
-        photosUrl: photosUrl,
-        ...judgement,
-      },
+      data: issueData,
     });
-
     res
       .status(200)
       .json({ id: newIssue.id, message: "issue successfully created" });

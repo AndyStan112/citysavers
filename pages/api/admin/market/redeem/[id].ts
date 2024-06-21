@@ -12,7 +12,6 @@ export default async function handler(
   try {
     const session = await getToken({ req });
     const userId = session?.sub;
-    const { issueId, priority } = req.body;
     const id = req.query.id as string;
 
     const offer = await prisma.offer.findUnique({
@@ -22,7 +21,14 @@ export default async function handler(
     if (!offer) {
       throw new Error(`Offer with ID ${id} not found.`);
     }
-
+    const user = await prisma.user.findFirst({
+      where: { id: userId },
+      select: { coins: true },
+    });
+    if (!user) {
+      throw new Error(`Invalid session`);
+    }
+    if (offer.value > user.coins) throw new Error("Not enough money");
     await prisma.$transaction([
       prisma.user.update({
         where: { id: userId },

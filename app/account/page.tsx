@@ -12,13 +12,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import assert from "assert";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function AccountPage() {
   const { update, data, status } = useSession();
+  const [coins, setCoins] = useState("-");
+  const [points, setPoints] = useState("-");
   const router = useRouter();
 
   useEffect(() => {
@@ -36,6 +39,23 @@ export default function AccountPage() {
     }
   };
 
+  useEffect(() => {
+    fetch("/api/points_and_coins/get")
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        assert(res.coins !== undefined);
+        assert(res.points !== undefined);
+
+        setCoins(res.coins);
+        setPoints(res.points);
+      })
+      .catch((err) => {
+        enqueueSnackbar("Error getting points and coins");
+        console.log(err);
+      });
+  }, [setCoins, setPoints]);
+
   return data ? (
     <Box sx={{ marginX: "auto", maxWidth: "500px" }}>
       <Paper sx={{ marginTop: "75px" }}>
@@ -50,7 +70,7 @@ export default function AccountPage() {
               {data.user.name ? data.user.name : "Unknown"}
             </Typography>
             <Typography>
-              {data.user.coins} coins | {data.user.points} points
+              {coins} coins | {points} points
             </Typography>
           </Stack>
           <Divider component="hr" />

@@ -73,35 +73,27 @@ model Issue {
   description      String?
   county           String    @default("none")
 
-  userId      String
-  Solution    Solution[]
-  Transaction Transaction[]
-  savedBy     SavedIssue[]
+  userId   String
+  Solution Solution[]
+  savedBy  SavedIssue[]
 }
 
 model Solution {
-  id            String        @id @default(cuid())
-  issue         Issue         @relation(fields: [issueId], references: [id])
-  solvedBy      User          @relation(fields: [userId], references: [id])
-  status        String        @default("pending")
+  id            String   @id @default(cuid())
+  issue         Issue    @relation(fields: [issueId], references: [id])
+  solvedBy      User     @relation(fields: [userId], references: [id])
+  status        String   @default("pending")
   statusMessage String
   photosUrl     String[]
   description   String
   issueId       String
   userId        String
-  Transaction   Transaction[]
 }
 
 model Transaction {
   id    String    @id @default(cuid())
   coins Int
   date  DateTime? @default(now())
-
-  issue   Issue?  @relation(fields: [issueId], references: [id])
-  issueId String?
-
-  solution   Solution? @relation(fields: [solutionId], references: [id])
-  solutionId String?
 }
 
 model VerificationToken {

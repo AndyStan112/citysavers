@@ -38,12 +38,14 @@ export default async function handler(
       }),
       prisma.user.update({
         where: { id: solverId },
-        data: { coins: STATUS_TO_COIN_CHANGE[status as StatusMod] },
+        data: {
+          coins: STATUS_TO_COIN_CHANGE[status as StatusMod],
+          points: { increment: status != "rejected" ? coins * 2.3 : 0 },
+        },
       }),
       prisma.transaction.create({
         data: {
           coins: coins * sign,
-          solution: { connect: { id: solutionId } },
         },
       }),
     ];

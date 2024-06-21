@@ -10,6 +10,7 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
+import assert from "assert";
 import { enqueueSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 
@@ -20,6 +21,7 @@ export default function SavedPage() {
     await fetch("/api/saved/get")
       .then((res) => res.json())
       .then((data) => {
+        assert(Array.isArray(data));
         setIssues(data);
       })
       .catch((error) => {

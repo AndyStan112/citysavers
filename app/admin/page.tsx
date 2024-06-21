@@ -1,6 +1,8 @@
 "use client";
 import ChipsList from "@/components/ChipsList/ChipsList";
 import Gallery from "@/components/Gallery/Gallery";
+import { IssueData } from "@/components/IssueListItem/IssueData";
+import IssueListItem from "@/components/IssueListItem/IssueListItem";
 import { IssueTypesData } from "@/constants/IssueTypes";
 import { LocationTypesData } from "@/constants/LocationTypes";
 import {
@@ -25,8 +27,7 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { Session } from "next-auth";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 import { useEffect, useState } from "react";
@@ -34,7 +35,7 @@ import { useEffect, useState } from "react";
 export default function AdminPage() {
   const { status, data } = useSession();
   const router = useRouter();
-  const [issuesArray, setIssuesArray] = useState([]);
+  const [issuesArray, setIssuesArray] = useState<IssueData[]>([]);
   const [pendingType, setPendingType] = useState("issue");
   const [currentIssue, setCurrentIssue] = useState<string>("");
   const [issueData, setIssueData] = useState<any>(null);
@@ -139,64 +140,12 @@ export default function AdminPage() {
             </Stack>
             <Divider />
             <List>
-              {issuesArray.map((issue, key) => (
-                <ListItemButton
+              {issuesArray.map((value, key) => (
+                <IssueListItem
                   key={key}
-                  onClick={() => setCurrentIssue(issue.id)}
-                >
-                  <ListItemText>
-                    <Stack direction="column">
-                      <Typography>{issue.shortDescription}</Typography>
-                      <Stack
-                        direction="row"
-                        gap={1}
-                        sx={{ overflow: "hidden" }}
-                      >
-                        {issue.status == "pending" ? (
-                          <Chip
-                            icon={<AccessAlarm />}
-                            label="Pending approval"
-                            size="small"
-                            color="warning"
-                          />
-                        ) : issue.status == "rejected" ? (
-                          <Chip
-                            icon={<DoNotDisturbOn />}
-                            label="Rejected"
-                            size="small"
-                            color="error"
-                          />
-                        ) : issue.status == "approved" ? (
-                          <Chip
-                            icon={<AccessAlarm />}
-                            label="Pending solution"
-                            size="small"
-                            color="info"
-                          />
-                        ) : issue.status == "solved" ? (
-                          <Chip
-                            icon={<Done />}
-                            label="Solved"
-                            size="small"
-                            color="success"
-                          />
-                        ) : (
-                          <></>
-                        )}
-                        <Chip
-                          icon={LocationTypesData[issue.locationType].icon}
-                          label={LocationTypesData[issue.locationType].name}
-                          size="small"
-                        />
-                        <Chip
-                          icon={IssueTypesData[issue.category].icon}
-                          label={IssueTypesData[issue.category].name}
-                          size="small"
-                        />
-                      </Stack>
-                    </Stack>
-                  </ListItemText>
-                </ListItemButton>
+                  data={value}
+                  clickHandler={() => setCurrentIssue(value.id)}
+                />
               ))}
             </List>
           </Stack>

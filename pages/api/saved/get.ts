@@ -13,7 +13,7 @@ export default async function handler(
       where: { userId: session?.sub },
     });
 
-    res.status(200).json({ issues });
+    res.status(200).json(issues.map((savedIssue) => savedIssue.issue));
   } catch (e: any) {
     res.status(400).json({ error: e.message });
   }

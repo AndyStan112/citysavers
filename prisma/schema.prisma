@@ -68,6 +68,8 @@ model Issue {
   moreDetails      String?
   shortDescription String
   priority         String
+  isIssue          Boolean
+  description      String
 
   userId      String
   Solution    Solution[]

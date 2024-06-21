@@ -56,8 +56,10 @@ CREATE TABLE "Issue" (
     "locationType" TEXT NOT NULL,
     "moreDetails" TEXT,
     "shortDescription" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
     "priority" TEXT NOT NULL,
+    "isIssue" BOOLEAN NOT NULL,
+    "description" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Issue_pkey" PRIMARY KEY ("id")
 );
@@ -93,6 +95,15 @@ CREATE TABLE "VerificationToken" (
     "expires" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
 );
 
+-- CreateTable
+CREATE TABLE "SavedIssue" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "issueId" TEXT NOT NULL,
+
+    CONSTRAINT "SavedIssue_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
@@ -107,6 +118,9 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "SavedIssue_userId_issueId_key" ON "SavedIssue"("userId", "issueId");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -128,3 +142,9 @@ ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_issueId_fkey" FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_solutionId_fkey" FOREIGN KEY ("solutionId") REFERENCES "Solution"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SavedIssue" ADD CONSTRAINT "SavedIssue_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SavedIssue" ADD CONSTRAINT "SavedIssue_issueId_fkey" FOREIGN KEY ("issueId") REFERENCES "Issue"("id") ON DELETE CASCADE ON UPDATE CASCADE;

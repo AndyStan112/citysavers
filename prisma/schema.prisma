@@ -96,6 +96,15 @@ model Transaction {
   date  DateTime? @default(now())
 }
 
+model Offer {
+  id          String  @id @default(cuid())
+  name        String
+  partner     String
+  value       Int
+  description String
+  photoUrl    String?
+}
+
 model VerificationToken {
   identifier String
   token      String    @unique

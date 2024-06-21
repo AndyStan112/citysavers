@@ -2,6 +2,7 @@
 import { IssueData } from "@/components/IssueListItem/IssueData";
 import IssueListItem from "@/components/IssueListItem/IssueListItem";
 import OverlayPage from "@/components/OverlayPage/OverlayPage";
+import { MyLocationCoords } from "@/constants/MapGeolocation";
 import {
   Box,
   Divider,
@@ -12,9 +13,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useAtomValue } from "jotai";
 import { enqueueSnackbar } from "notistack";
 import { SyntheticEvent, useEffect, useState } from "react";
-import { useGeolocated } from "react-geolocated";
 
 const radiusMarks = [
   {
@@ -65,7 +66,7 @@ type Coords = {
 
 export default function NearMePage() {
   const [issues, setIssues] = useState<IssueData[] | null>(null);
-  const [cachedCoords, setCachedCoords] = useState<Coords | null>(null);
+  const myLocation = useAtomValue(MyLocationCoords);
 
   const [radius, setRadius] = useState(0.5);
   const handleSetRadius = (
@@ -89,42 +90,16 @@ export default function NearMePage() {
     }
   };
 
-  const { coords, getPosition } = useGeolocated({
-    positionOptions: {
-      enableHighAccuracy: false,
-    },
-    watchPosition: false,
-    userDecisionTimeout: 1000,
-  });
-
-  useEffect(() => {
-    if (cachedCoords == null) getPosition();
-  }, [cachedCoords, getPosition]);
-
-  useEffect(() => {
-    if (coords) {
-      setCachedCoords({
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-      });
-      fetchData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coords, setCachedCoords]);
-
   const fetchData = async (radius: number = -1) => {
-    if (cachedCoords == null) return;
+    if (myLocation == null) return;
 
-    console.log(cachedCoords);
-    console.log(radius > 0 ? radius : searchRadius);
     await fetch(
       `/api/map/nearme?r=${radius > 0 ? radius : searchRadius}&lat=${
-        cachedCoords.latitude
-      }&lon=${cachedCoords.longitude}`
+        myLocation.lat
+      }&lon=${myLocation.lng}`
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setIssues(data);
       })
       .catch((error) => {
@@ -132,6 +107,11 @@ export default function NearMePage() {
         enqueueSnackbar("Failed to get issues.");
       });
   };
+
+  useEffect(() => {
+    if (myLocation && issues == null) fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myLocation, issues]);
 
   return (
     <OverlayPage>

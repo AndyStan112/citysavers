@@ -53,6 +53,7 @@ model User {
   solutions     Solution[]
   savedIssues   SavedIssue[]
   Transaction   Transaction[]
+  likedIssues   LikedIssue[]
 }
 
 model Issue {
@@ -73,10 +74,12 @@ model Issue {
   isIssue          Boolean?
   description      String?
   county           String    @default("none")
+  likes            Int       @default(0)
 
   userId   String
   Solution Solution[]
   savedBy  SavedIssue[]
+  likedBy  LikedIssue[]
 }
 
 model Solution {
@@ -117,6 +120,16 @@ model VerificationToken {
 }
 
 model SavedIssue {
+  id      String @id @default(cuid())
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issue   Issue  @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  userId  String
+  issueId String
+
+  @@unique([userId, issueId])
+}
+
+model LikedIssue {
   id      String @id @default(cuid())
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   issue   Issue  @relation(fields: [issueId], references: [id], onDelete: Cascade)

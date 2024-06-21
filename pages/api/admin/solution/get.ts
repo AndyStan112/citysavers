@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prismadb";
 import { isAdmin } from "@/lib/util";
 import { STATUSES } from "@/constants/DbConstants";
+import { getToken } from "next-auth/jwt";
 
 const getSolutions = async (type: string) => {
   if (type === "all")
@@ -17,7 +18,8 @@ export default async function handler(
 ) {
   try {
     const type = req.query.type as string;
-    const userId = req.body.id;
+    const session = await getToken({ req });
+    const userId = session?.sub;
     if (!isAdmin(userId)) throw new Error("User not admin");
 
     const solutions = await getSolutions(type);

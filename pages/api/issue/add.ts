@@ -4,14 +4,16 @@ import prisma from "../../../lib/prismadb";
 import { issueReviewContext } from "@/constants/openai";
 import axios from "axios";
 import findCounty from "@/lib/county";
+import { getToken } from "next-auth/jwt";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
+    const session = await getToken({ req });
+    const userId = session?.sub;
     const {
-      userId,
       category,
       latitude,
       longitude,

@@ -36,14 +36,14 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?      @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
-  role          String       @default("user")
-  coins         Int          @default(0)
-  points        Int          @default(0)
+  role          String        @default("user")
+  coins         Int           @default(0)
+  points        Int           @default(0)
   phoneNumber   String?
   firstName     String?
   lastName      String?
@@ -52,6 +52,7 @@ model User {
   issues        Issue[]
   solutions     Solution[]
   savedIssues   SavedIssue[]
+  Transaction   Transaction[]
 }
 
 model Issue {
@@ -91,9 +92,20 @@ model Solution {
 }
 
 model Transaction {
-  id    String    @id @default(cuid())
-  coins Int
-  date  DateTime? @default(now())
+  id     String    @id @default(cuid())
+  userId String
+  coins  Int
+  date   DateTime? @default(now())
+  user   User      @relation(fields: [userId], references: [id])
+}
+
+model Offer {
+  id          String  @id @default(cuid())
+  name        String
+  partner     String
+  value       Int
+  description String
+  photoUrl    String?
 }
 
 model VerificationToken {

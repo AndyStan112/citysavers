@@ -37,15 +37,16 @@ export default function IssuePoints() {
 
   return (
     <>
-      {issuePoints.map((value, index) => (
-        <IssueMarker
-          key={index}
-          latitude={value.latitude}
-          longitude={value.longitude}
-          issueId={value.id}
-          category={value.category}
-        />
-      ))}
+      {Array.isArray(issuePoints) &&
+        issuePoints.map((value, index) => (
+          <IssueMarker
+            key={index}
+            latitude={value.latitude}
+            longitude={value.longitude}
+            issueId={value.id}
+            category={value.category}
+          />
+        ))}
     </>
   );
 }

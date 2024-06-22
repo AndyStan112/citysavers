@@ -108,6 +108,12 @@ export default function AdminPage() {
     })
       .then((data) => {
         enqueueSnackbar("Set succesful!");
+        setIssueData({ ...issueData, status: status });
+        setIssuesArray((arr) =>
+          arr.map((el) =>
+            el.id == currentIssue ? { ...el, status: status } : el
+          )
+        );
       })
       .catch((error) => {
         console.log(error);

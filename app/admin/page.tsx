@@ -261,6 +261,13 @@ export default function AdminPage() {
                   >
                     Reject
                   </Button>
+                  <Button
+                    fullWidth
+                    color="warning"
+                    onClick={() => modifyIssue("wip")}
+                  >
+                    WIP
+                  </Button>
                 </Stack>
               </Stack>
             </Box>

@@ -1,4 +1,9 @@
-import { AccessAlarm, DoNotDisturbOn, Done } from "@mui/icons-material";
+import {
+  AccessAlarm,
+  DoNotDisturbOn,
+  Done,
+  Construction,
+} from "@mui/icons-material";
 import { Chip } from "@mui/material";
 
 export default function StatusChip({ status }: { status: string | undefined }) {
@@ -25,6 +30,13 @@ export default function StatusChip({ status }: { status: string | undefined }) {
     />
   ) : status == "solved" ? (
     <Chip icon={<Done />} label="Solved" size="small" color="success" />
+  ) : status == "wip" ? (
+    <Chip
+      icon={<Construction />}
+      label="Work in progress"
+      size="small"
+      color="success"
+    />
   ) : (
     <></>
   );

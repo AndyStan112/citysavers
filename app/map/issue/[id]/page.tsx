@@ -8,6 +8,8 @@ import {
   BookmarkRemoveOutlined,
   Launch,
   Share,
+  ThumbUpOffAlt,
+  ThumbUpAlt,
 } from "@mui/icons-material";
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -20,6 +22,7 @@ import LocationTypeChip from "@/components/Chips/LocationTypeChip";
 export default function ViewIssuePage({ params }: { params: { id: string } }) {
   const [issueData, setIssueData] = useState<any>(null);
   const [isSaved, setIsSaved] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     if (!issueData) {
@@ -32,6 +35,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
           } else {
             setIssueData(data);
             setIsSaved(data.isSaved);
+            setIsLiked(data.isLiked);
           }
         })
         .catch((error) => {
@@ -66,11 +70,27 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
     fetch(`/api/save/${params.id}`)
       .then((res) => res.json)
       .then((res) => {
+        enqueueSnackbar(`Managed to save`);
         setIsSaved(true);
       })
       .catch((reason) => {
         console.log(reason);
         enqueueSnackbar("Failed to save.");
+      });
+  };
+
+  const likeClickHandler = async () => {
+    if (!issueData) return;
+    const route = isLiked ? "/api/unlike/" : "/api/like/";
+    fetch(`${route}${params.id}`)
+      .then((res) => res.json)
+      .then((res) => {
+        enqueueSnackbar(`Managed to ${isLiked ? "unlike" : "like"}`);
+        setIsLiked((curr) => !curr);
+      })
+      .catch((reason) => {
+        console.log(reason);
+        enqueueSnackbar(`Failed to ${isLiked ? "unlike" : "like"}`);
       });
   };
 
@@ -137,6 +157,27 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 onClick={saveClickHandler}
               >
                 Save
+              </Button>
+            )}
+            {isLiked ? (
+              <Button
+                color="primary"
+                variant="outlined"
+                fullWidth
+                onClick={likeClickHandler}
+                startIcon={<ThumbUpAlt />}
+              >
+                Liked
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                variant="outlined"
+                fullWidth
+                startIcon={<ThumbUpOffAlt />}
+                onClick={likeClickHandler}
+              >
+                Like
               </Button>
             )}
             <Button

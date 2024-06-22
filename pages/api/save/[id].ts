@@ -21,7 +21,7 @@ export default async function handler(
       });
     }
 
-    if (savedCount === 0) throw new Error("already saved");
+    if (savedCount === 1) throw new Error("already saved");
 
     const issue = await prisma.savedIssue.create({
       data: { issueId: id, userId: session?.id as string },

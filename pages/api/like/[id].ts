@@ -11,7 +11,7 @@ export default async function handler(
   const id = req.query.id as string;
 
   try {
-    let likedCount = 0;
+    let likedCount = 1;
     if (session) {
       likedCount = await prisma.savedIssue.count({
         where: {
@@ -21,7 +21,7 @@ export default async function handler(
       });
     }
 
-    if (likedCount === 0) throw new Error("already liked");
+    if (likedCount === 1) throw new Error("already liked");
     const transaction = [
       prisma.likedIssue.create({
         data: { issueId: id, userId: session?.id as string },

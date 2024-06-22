@@ -11,7 +11,7 @@ export default async function handler(
   const id = req.query.id as string;
 
   try {
-    let savedCount = 1;
+    let savedCount = 0;
     if (session) {
       savedCount = await prisma.savedIssue.count({
         where: {
@@ -21,7 +21,7 @@ export default async function handler(
       });
     }
 
-    if (savedCount === 1) throw new Error("already unsaved");
+    if (savedCount === 0) throw new Error("already unsaved");
 
     const issue = await prisma.savedIssue.deleteMany({
       where: { issueId: id, userId: session?.id as string },

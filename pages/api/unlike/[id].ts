@@ -11,7 +11,7 @@ export default async function handler(
   const id = req.query.id as string;
 
   try {
-    let likedCount = 1;
+    let likedCount = 0;
     if (session) {
       likedCount = await prisma.savedIssue.count({
         where: {
@@ -21,7 +21,7 @@ export default async function handler(
       });
     }
 
-    if (likedCount === 1) throw new Error("already unliked");
+    if (likedCount === 0) throw new Error("already unliked");
     const transaction = [
       prisma.likedIssue.deleteMany({
         where: { issueId: id, userId: session?.id as string },

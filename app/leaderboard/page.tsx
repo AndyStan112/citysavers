@@ -9,6 +9,12 @@ import {
   Paper,
   Skeleton,
   Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
 } from "@mui/material";
 import assert from "assert";
@@ -41,17 +47,25 @@ export default function Leaderboard() {
         <Stack gap={1}>
           <Typography variant="h4">Leaderboard</Typography>
         </Stack>
-        <Paper>
+        <TableContainer component={Paper} style={{ margin: "50px" }}>
           {Array.isArray(leaderboard) ? (
             leaderboard.length > 0 ? (
-              <List>
-                {leaderboard.map((value, index) => (
-                  <React.Fragment key={index}>
-                    {index > 0 && <Divider component="hr" />}
-                    <LeaderboardItem data={value} />
-                  </React.Fragment>
-                ))}
-              </List>
+              <Table aria-label="leaderboard table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Rank</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell align="right">Points</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {leaderboard.map((row: any, index: any) => (
+                    <LeaderboardItem
+                      data={{ ...row, rank: index + 1 }}
+                    ></LeaderboardItem>
+                  ))}
+                </TableBody>
+              </Table>
             ) : (
               <Typography align="center" padding="10px 0">
                 The leaderboard is empty.
@@ -72,7 +86,7 @@ export default function Leaderboard() {
               ))}
             </List>
           )}
-        </Paper>
+        </TableContainer>
       </Box>
     </>
   );

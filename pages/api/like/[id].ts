@@ -13,12 +13,14 @@ export default async function handler(
   try {
     let likedCount = 1;
     if (session) {
-      likedCount = await prisma.savedIssue.count({
+      console.log("muie");
+      likedCount = await prisma.likedIssue.count({
         where: {
           userId: session.id as string,
           issueId: id,
         },
       });
+      console.log(likedCount);
     }
 
     if (likedCount === 1) throw new Error("already liked");
@@ -32,6 +34,7 @@ export default async function handler(
 
     res.status(200).json({});
   } catch (e: any) {
+    console.log(e);
     res.status(400).json({ error: e.message });
   }
 }

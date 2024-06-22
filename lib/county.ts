@@ -41,5 +41,5 @@ export default function findCounty(
       return county;
     }
   }
-  return null;
+  return "none";
 }

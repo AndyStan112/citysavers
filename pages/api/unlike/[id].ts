@@ -13,7 +13,7 @@ export default async function handler(
   try {
     let likedCount = 0;
     if (session) {
-      likedCount = await prisma.savedIssue.count({
+      likedCount = await prisma.likedIssue.count({
         where: {
           userId: session.id as string,
           issueId: id,

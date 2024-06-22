@@ -2,6 +2,7 @@
 import CategoryChip from "@/components/Chips/CategoryChip";
 import LocationTypeChip from "@/components/Chips/LocationTypeChip";
 import StatusChip from "@/components/Chips/StatusChip";
+import VerdictChip from "@/components/Chips/VerdictChip";
 import ChipsList from "@/components/ChipsList/ChipsList";
 import Gallery from "@/components/Gallery/Gallery";
 import { IssueData } from "@/components/IssueListItem/IssueData";
@@ -215,6 +216,18 @@ export default function AdminPage() {
                             GMaps
                           </Button>
                         </a>
+                      </Stack>
+                      <br />
+                      <Stack gap={1}>
+                        <Stack direction="row" justifyContent="space-around">
+                          <strong>AI verdict:</strong>
+                          <VerdictChip verdict={issueData.isIssue} />
+                          <br />
+                        </Stack>
+                        <Typography fontSize="small">
+                          <br />
+                          {issueData.description}
+                        </Typography>
                       </Stack>
                     </>
                   )}

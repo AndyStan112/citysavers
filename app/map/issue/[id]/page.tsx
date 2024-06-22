@@ -83,7 +83,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
     if (!issueData) return;
     const route = isLiked ? "/api/unlike/" : "/api/like/";
     fetch(`${route}${params.id}`)
-      .then((res) => res.json)
+      .then((res) => res.json())
       .then((res) => {
         setIsLiked((curr) => !curr);
       })
@@ -169,7 +169,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 onClick={likeClickHandler}
                 startIcon={<ThumbUpAlt />}
               >
-                {issueData.likes}
+                {issueData.likes + (issueData.isLiked ? 1 : 0)}
               </Button>
             ) : (
               <Button

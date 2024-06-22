@@ -25,8 +25,8 @@ export default function LeaderboardItem({ data }: { data: LeaderboardData }) {
       </TableCell>
       <TableCell>
         <Stack direction="row" alignItems="center">
-          <Avatar src={data.image} alt={data.name : "Unknown"} />
-          <Typography padding="0px 10px">{data.name : "Unknown"}</Typography>
+          <Avatar src={data.image} alt={data.name ?? "Unknown"} />
+          <Typography padding="0px 10px">{data.name ?? "Unknown"}</Typography>
           <Typography fontSize="30px">{emojis[data.rank] ?? ""}</Typography>
         </Stack>
       </TableCell>

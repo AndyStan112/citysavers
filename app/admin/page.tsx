@@ -189,6 +189,7 @@ export default function AdminPage() {
                         <StatusChip status={issueData.status} />
                         <LocationTypeChip type={issueData.locationType} />
                         <CategoryChip category={issueData.category} />
+                        <p>likes :{issueData.likes}</p>
                       </ChipsList>
                       <Typography>Images:</Typography>
                       <Gallery imageList={issueData.photosUrl} />

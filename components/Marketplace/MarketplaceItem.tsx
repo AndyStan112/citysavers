@@ -21,10 +21,27 @@ export default function MarketplaceItem({ data }: { data: Offer }) {
     setOpen(false);
   };
 
-  const handleRedeem = () => {
-    enqueueSnackbar("Offer redeemed succesfully! An email has been sent.");
-    setOpen(false);
-  };
+  const handleRedeem = async () => {
+    
+      const response = await fetch(`/api/admin/market/redeem/${data.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => res.json())
+      .then(response => {
+        if (response.error) {
+          throw new Error(`Failed to redeem offer: ${response.error}`);
+        }
+    
+        enqueueSnackbar("Offer redeemed successfully! An email has been sent.");
+        setOpen(false);}
+    )
+    .catch (error=> {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    });
+  }
+  
 
   const clickHandler = () => {
     setOpen(true);

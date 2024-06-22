@@ -85,12 +85,14 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
     fetch(`${route}${params.id}`)
       .then((res) => res.json)
       .then((res) => {
-        enqueueSnackbar(`Managed to ${isLiked ? "unlike" : "like"}`);
         setIsLiked((curr) => !curr);
       })
       .catch((reason) => {
         console.log(reason);
-        enqueueSnackbar(`Failed to ${isLiked ? "unlike" : "like"}`);
+        enqueueSnackbar(
+          `Server error when ${isLiked ? "unliking" : "liking"}`,
+          { variant: "error" }
+        );
       });
   };
 
@@ -167,7 +169,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 onClick={likeClickHandler}
                 startIcon={<ThumbUpAlt />}
               >
-                Liked
+                {issueData.likes}
               </Button>
             ) : (
               <Button
@@ -177,7 +179,7 @@ export default function ViewIssuePage({ params }: { params: { id: string } }) {
                 startIcon={<ThumbUpOffAlt />}
                 onClick={likeClickHandler}
               >
-                Like
+                {issueData.likes}
               </Button>
             )}
             <Button

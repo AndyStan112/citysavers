@@ -29,8 +29,15 @@ export default async function handler(
   try {
     const issue = await prisma.issue.findUnique({ where: { id } });
     let savedCount = 0;
+    let likedCount = 0;
     if (session) {
       savedCount = await prisma.savedIssue.count({
+        where: {
+          userId: session.id as string,
+          issueId: id,
+        },
+      });
+      likedCount = await prisma.likedIssue.count({
         where: {
           userId: session.id as string,
           issueId: id,
@@ -39,7 +46,11 @@ export default async function handler(
     }
 
     if (!issue) throw new Error("Issue not found");
-    res.status(200).json({ ...issue, isSaved: savedCount === 1 } as Data);
+    res.status(200).json({
+      ...issue,
+      isSaved: savedCount === 1,
+      isLiked: likedCount === 1,
+    } as Data);
   } catch (e: any) {
     res.status(400).json({ error: e.message });
   }

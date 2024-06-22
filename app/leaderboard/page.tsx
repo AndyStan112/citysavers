@@ -47,7 +47,7 @@ export default function Leaderboard() {
         <Stack gap={1}>
           <Typography variant="h4">Leaderboard</Typography>
         </Stack>
-        <TableContainer component={Paper} style={{ margin: "50px" }}>
+        <TableContainer component={Paper} sx={{ marginY: "10px" }}>
           {Array.isArray(leaderboard) ? (
             leaderboard.length > 0 ? (
               <Table aria-label="leaderboard table">
@@ -61,6 +61,7 @@ export default function Leaderboard() {
                 <TableBody>
                   {leaderboard.map((row: any, index: any) => (
                     <LeaderboardItem
+                      key={index}
                       data={{ ...row, rank: index + 1 }}
                     ></LeaderboardItem>
                   ))}

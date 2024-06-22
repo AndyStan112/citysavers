@@ -179,7 +179,9 @@ export default function AdminPage() {
                   Issue
                 </Typography>
                 <Divider />
-                <Box sx={{ flex: 4, oveflowY: "auto", padding: "10px 18px" }}>
+                <Box
+                  sx={{ flex: 4, overflowY: "scroll", padding: "10px 18px" }}
+                >
                   {issueData && (
                     <>
                       <Typography variant="h6">
@@ -189,15 +191,14 @@ export default function AdminPage() {
                         <StatusChip status={issueData.status} />
                         <LocationTypeChip type={issueData.locationType} />
                         <CategoryChip category={issueData.category} />
-                        <p>likes :{issueData.likes}</p>
+                        <Chip
+                          size="small"
+                          label={"Likes " + issueData.likes}
+                        ></Chip>
                       </ChipsList>
                       <Typography>Images:</Typography>
                       <Gallery imageList={issueData.photosUrl} />
-                      <Typography>
-                        <strong>More details:</strong>
-                        <br />
-                        {issueData.moreDetails}
-                      </Typography>
+                      <Typography>{issueData.moreDetails}</Typography>
                       <Stack direction="row" gap={1}>
                         <a
                           href={
@@ -220,13 +221,11 @@ export default function AdminPage() {
                       </Stack>
                       <br />
                       <Stack gap={1}>
-                        <Stack direction="row" justifyContent="space-around">
+                        <Stack direction="row" gap={1}>
                           <strong>AI verdict:</strong>
                           <VerdictChip verdict={issueData.isIssue} />
-                          <br />
                         </Stack>
                         <Typography fontSize="small">
-                          <br />
                           {issueData.description}
                         </Typography>
                       </Stack>

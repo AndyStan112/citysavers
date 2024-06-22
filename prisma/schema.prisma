@@ -73,7 +73,7 @@ model Issue {
   priority         String
   isIssue          Boolean?
   description      String?
-  county           String    @default("none")
+  county           String?   @default("none")
   likes            Int       @default(0)
 
   userId   String

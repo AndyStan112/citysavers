@@ -62,6 +62,7 @@ export default async function handler(
           },
         }
       );
+
       const responseContent = response.data.choices[0].message.content;
       if (responseContent) judgement = JSON.parse(responseContent);
     }
@@ -69,7 +70,7 @@ export default async function handler(
     console.log(judgement);
     const county = findCounty([longitude, latitude]);
     const issueData = {
-      userId,
+      reportedBy: { connect: { id: userId } },
       latitude,
       longitude,
       locationType,
@@ -82,7 +83,7 @@ export default async function handler(
       ...judgement,
       county,
     };
-
+    console.log(issueData);
     let newIssue = await prisma.issue.create({
       data: issueData,
     });

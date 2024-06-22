@@ -8,7 +8,7 @@ export default async function handler(
   try {
     const offers = await prisma.offer.findMany({});
 
-    res.status(200).json({ offers });
+    res.status(200).json(offers);
   } catch (e: any) {
     res.status(400).json({ error: e.message });
   }

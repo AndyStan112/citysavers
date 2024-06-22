@@ -1,38 +1,27 @@
 "use client";
 import MarketplaceItem from "@/components/Marketplace/MarketplaceItem";
 import { Box, Divider, List, Paper, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function Marketplace() {
-  const offers = [
-    {
-      name: "20% discount at Good Coffee",
-      partner: "Good Coffee Inc.",
-      value: 500,
-      description:
-        "Get 20% on 5 coffees, limit of 1 per day. Terms and conditions apply. Check our website http://goodcoffeeinc.com for more details.",
-    },
-    {
-      name: "10% discount on one order",
-      partner: "Best Pizza",
-      value: 100,
-      description:
-        "Get 10% discount on one order at Best Pizza. Limited to pizzas. Terms and conditions apply.",
-    },
-    {
-      name: "Get 1+1 burger",
-      partner: "Burger Queen",
-      value: 1000,
-      description:
-        "Get one free burger when ordering a burger. Available on tuesdays only. Limit one offer per person. Terms and conditions apply.",
-    },
-    {
-      name: "5% discount for a massage session",
-      partner: "Twenty One Sailors",
-      value: 50,
-      description:
-        "Get 5% discount for a massage session. 2 hours mininum. Limited to one discount per week. Terms and conditions apply.",
-    },
-  ];
+  const [offers, setOffers] = useState<[]>([]);
+
+  useEffect(() => {
+    const fetchOffers = async () => {
+      try {
+        const response = await fetch('/api/admin/market/offers');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setOffers(data); // Assuming data is an array of Offer objects
+      } catch (error) {
+        console.error('Error fetching offers:', error);
+      }
+    };
+
+    fetchOffers();
+  }, []);  
 
   return (
     <>

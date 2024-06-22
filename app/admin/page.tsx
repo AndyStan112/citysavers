@@ -7,6 +7,7 @@ import ChipsList from "@/components/ChipsList/ChipsList";
 import Gallery from "@/components/Gallery/Gallery";
 import { IssueData } from "@/components/IssueListItem/IssueData";
 import IssueListItem from "@/components/IssueListItem/IssueListItem";
+import { STATUS_ORD } from "@/constants/DbConstants";
 import { IssueTypesData } from "@/constants/IssueTypes";
 import { LocationTypesData } from "@/constants/LocationTypes";
 import {
@@ -50,6 +51,11 @@ export default function AdminPage() {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
+        res.sort(
+          (a: any, b: any) =>
+            STATUS_ORD[a.status as "approved" | "pending"] -
+            STATUS_ORD[b.status as "approved" | "pending"]
+        );
         setIssuesArray(res);
       })
       .catch((err) => {

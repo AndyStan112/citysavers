@@ -1,4 +1,5 @@
 export const STATUSES = ["rejected", "pending", "approved", "solved"];
+export const STATUS_ORD = { approved: 2, pending: 1 };
 export const P_TO_ISSUE = {
   low: 5,
   medium: 10,

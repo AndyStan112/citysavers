@@ -261,6 +261,7 @@ export default function AdminPage() {
                   >
                     Reject
                   </Button>
+                  <Divider orientation="vertical" />
                   <Button
                     fullWidth
                     color="warning"
